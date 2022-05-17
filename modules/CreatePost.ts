@@ -22,10 +22,10 @@ export const upload = multer({ storage: fileStorage }).single("file");
 
 export const CreatePost = async (req: Request, res: Response) => {
   try {
-    const { title, content, category } = req.body;
+    const { title, content } = req.body;
+    console.log(title);
     const filename = req.file?.filename;
     const path = req.file?.path;
-    console.log(path);
     console.log(req.file);
     if (!req.files) {
       const error = new Error("Please upload a file");
@@ -33,35 +33,22 @@ export const CreatePost = async (req: Request, res: Response) => {
       // return res.status(400).json({ msg: "No file uploaded" });
     }
 
+    console.log(title, content);
+
     const result = await prisma.post.create({
       data: {
         title: title,
         content: content,
+        //@ts-ignore
         image: path,
       },
     });
-    console.log(result);
-
-    // file.mv(`./upload/${name}`, (err: any) => {
-    //   if (err) {
-    //     console.log(err);
-    //     res.status(500).send(err);
-    //   }
-    //   res.status(400).json({
-    //     status: "success",
-    //     fileName: name,
-    //     filepath: `upload/${name}`,
-    //   });
-    // });
-    // const addpost = await prisma.post.create({
-    //   data: {
-    //     title: title,
-    //     content: content,
-    //     image: file.path,
-    //   },
-    // });
-    // console.log(addpost);
-    res.send("single file upload");
+    // console.log("result:", result);
+    res.status(200).send({
+      path: path,
+      title: title,
+      content: content,
+    });
   } catch (error) {
     console.log(error);
   }
