@@ -18,12 +18,13 @@ const fileStorage = multer.diskStorage({
     // cb(null, `${year}/${month}/${file.originalname}`);
   },
 });
+
 export const upload = multer({ storage: fileStorage }).single("file");
 
 export const CreatePost = async (req: Request, res: Response) => {
   try {
     const { title, content } = req.body;
-    console.log(title);
+    console.log(title, content);
     const filename = req.file?.filename;
     const path = req.file?.path;
     console.log(req.file);
@@ -33,23 +34,20 @@ export const CreatePost = async (req: Request, res: Response) => {
       // return res.status(400).json({ msg: "No file uploaded" });
     }
 
-    console.log(title, content);
-
     const result = await prisma.post.create({
       data: {
         title: title,
         content: content,
-        //@ts-ignore
-        image: path,
+        image: filename,
       },
     });
+    if (result) {
+      res.status(200).json({ path, filename });
+    } else {
+      res.status(400).json("error");
+    }
     // console.log("result:", result);
-    res.status(200).send({
-      path: path,
-      title: title,
-      content: content,
-    });
   } catch (error) {
-    console.log(error);
+    res.status(500).json(error);
   }
 };
