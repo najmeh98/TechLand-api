@@ -3,50 +3,93 @@ import { Request, Response } from "express";
 import express from "express";
 import { prisma } from "../utilis/prisma";
 import multer from "multer";
-import path from "path";
+import fs, { mkdir } from "fs";
 
 const app = express();
 
+const getDirImage = () => {
+  const year = new Date().getFullYear();
+  const month = new Date().getMonth() + 1;
+  const day = new Date().getDate();
+
+  return `./upload/images/${year}/${month}/${day}`;
+};
+
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./upload");
+    const dir = getDirImage();
+
+    fs.mkdirSync(dir, { recursive: true });
+
+    return cb(null, dir);
   },
   filename: (req, file, cb) => {
-    let year = new Date(Date.now()).getFullYear();
-    let month = new Date(Date.now()).getMonth() + 1;
-    cb(null, Date.now() + file.originalname);
-    // cb(null, `${year}/${month}/${file.originalname}`);
+    // save in database
+    const filepath: any = `${process.env.PORT}/${getDirImage}/${file.originalname}`;
+
+    // if (!fs.existsSync(filepath)) {
+    cb(null, file.originalname);
+    // } else {
+    // cb(null, `${Date.now()} - ${file.originalname}`);
+    // }
   },
 });
 
-export const upload = multer({ storage: fileStorage }).single("file");
+export const upload = multer({
+  storage: fileStorage,
+  limits: { fileSize: 1024 * 1024 * 10 },
+}).single("file");
 
-export const CreatePost = async (req: Request, res: Response) => {
+console.log(upload);
+export const createPost = async (req: Request, res: Response) => {
+  let createdPost: any = [];
+  const { title, content } = req.body;
+
   try {
-    const { title, content } = req.body;
-    console.log(title, content);
-    const filename = req.file?.filename;
-    const path = req.file?.path;
-    console.log(req.file);
-    if (!req.files) {
-      const error = new Error("Please upload a file");
-      return error;
-      // return res.status(400).json({ msg: "No file uploaded" });
-    }
+    // const newPost = await prisma.post.create({
+    //   data: {
+    //     title: title,
+    //     content: content,
+    //     image: "",
+    //     author: {
+    //       //@ts-ignore
+    //       connect: { id: req.userId },
+    //     },
+    //   },
+    // });
+    // console.log(newPost);
+    // if (newPost) {
+    //   res.status(200).json({ path, filename });
+    // } else {
+    //   res.status(400).json("error");
+    // }
 
-    const result = await prisma.post.create({
-      data: {
-        title: title,
-        content: content,
-        image: filename,
-      },
-    });
-    if (result) {
-      res.status(200).json({ path, filename });
-    } else {
-      res.status(400).json("error");
-    }
-    // console.log("result:", result);
+    // const newpost = await prisma.post.create({
+    //   data: {
+    //     title: "Post 3",
+    //     content: "alsp boop!",
+    //     image: filepath,
+    //     author: {
+    //       connectOrCreate: {
+    //         create: {
+    //           email: "someone@example.com",
+    //           password: "someone",
+    //         },
+    //         where: {
+    //           email: "someone@example.com",
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
+    // console.dir({ newpost }, { depth: Infinity });
+    // console.log(newpost);
+    // const post = await prisma.post.findMany({});
+
+    // console.log(post);
+    // createdPost.push({ ...newpost });
+
+    res.status(200).json({});
   } catch (error) {
     res.status(500).json(error);
   }
