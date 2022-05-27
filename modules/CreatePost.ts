@@ -16,14 +16,14 @@ const getDirImage = () => {
 };
 
 const fileStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (req: any, file: any, cb: any) => {
     const dir = getDirImage();
 
     fs.mkdirSync(dir, { recursive: true });
 
     return cb(null, dir);
   },
-  filename: (req, file, cb) => {
+  filename: (req: any, file: any, cb: any) => {
     // save in database
     const filepath: any = `${getDirImage()}/${file.originalname}`;
 
@@ -37,7 +37,7 @@ const fileStorage = multer.diskStorage({
   },
 });
 
-export const upload = multer({
+export const upload: any = multer({
   storage: fileStorage,
   limits: { fileSize: 1024 * 1024 * 5 },
 }).single("file");
@@ -47,6 +47,7 @@ export const createPost = async (req: Request, res: Response) => {
   let createdPost: any = [];
   const { title, content, filepath } = req.body;
   console.log(req.body);
+  console.log(req.files);
 
   try {
     const newPost = await prisma.post.create({
@@ -62,7 +63,7 @@ export const createPost = async (req: Request, res: Response) => {
     });
     console.log(newPost);
     if (newPost) {
-      res.status(200).json({});
+      res.status(200).json(newPost);
     } else {
       res.status(400).json("error");
     }
