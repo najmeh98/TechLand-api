@@ -17,7 +17,7 @@ export const Login = async (req: Request, res: Response) => {
       // if (compare) {
       // @ts-ignore
       const token = jwt.sign(User.id, process.env.JWT_TOKEN);
-      res.status(200).send({
+      res.status(200).json({
         // user: {
         id: User.id,
         email: User.email,
@@ -29,9 +29,11 @@ export const Login = async (req: Request, res: Response) => {
       // } else {
       //   return res.status(400).send({ message: "invalid password" });
       // }
+    } else {
+      res.status(400).json("error");
     }
   } catch (error) {
-    res.status(404).json({ message: "User does not exist" });
+    res.status(500).json(error);
   }
 };
 
@@ -58,21 +60,26 @@ export const Authentication = async (req: Request, res: Response) => {
       // @ts-ignore
       const token = jwt.sign(newUser.id, process.env.JWT_TOKEN);
 
-      return res
-        .status(200)
-        .header("token", token)
-        .send({
-          user: {
-            id: newUser.id,
-            email: newUser.email,
-            fullName: newUser.name,
-          },
-          status: 1,
-          token,
-        });
+      if (newUser) {
+        // res.status(200).json(newUser);
+        return res
+          .status(200)
+          .header("token", token)
+          .json({
+            user: {
+              id: newUser.id,
+              email: newUser.email,
+              fullName: newUser.name,
+            },
+            status: 1,
+            token,
+          });
+      } else {
+        res.status(400).json("error");
+      }
     });
   } catch (error) {
     console.log(error);
-    return res.send({ messgae: "Falid" });
+    return res.status(500).json(error);
   }
 };
