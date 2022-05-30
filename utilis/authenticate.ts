@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
-  const token: any = req.header("token");
+  const token: any = req.header("auth_token");
   try {
     if (process.env.JWT_TOKEN) {
       const tokenUserId = jwt.verify(token, process.env.JWT_TOKEN);
