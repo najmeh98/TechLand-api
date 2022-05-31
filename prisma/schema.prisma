@@ -28,22 +28,23 @@ model Profile {
 
 model Post {
   id Int    @id @default(autoincrement())
+  title  String  @db.VarChar(255)
+  content String?  @db.VarChar(255)
+  image  String
+  author  User? @relation(fields: [authorId] , references: [id])
+  authorId Int?
+  published  Boolean @default(false)
+  // categories post_type
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  title  String  @db.VarChar(255)
-  content String  @db.VarChar(255)
-  author  User? @relation(fields: [authorId] , references: [id])
-  authorId Int
-  categories Category[]   @relation(references: [id])
-  image  String
 
 }
 
-model Category {
-  id Int   @id @default(autoincrement())
-  name String
-  posts  Post[] @relation(references: [id])
-}
+// model Category {
+//   id Int   @id @default(autoincrement())
+//   name String
+//   posts  Post[] @relation(references: [id])
+// }
 
 // enum post_type {
 //   other
