@@ -4,6 +4,7 @@ import express from "express";
 import { prisma } from "../utilis/prisma";
 import multer from "multer";
 import fs, { mkdir } from "fs";
+import { uploaderConfig, uploadService } from "../utilis/main-services";
 
 const app = express();
 // app.use(express.static("upload"));
@@ -42,19 +43,24 @@ export const upload: any = multer({
   limits: { fileSize: 1024 * 1024 * 5 },
 }).single("file");
 
-console.log(upload);
-export const createPost = async (req: Request, res: Response) => {
-  let createdPost: any = [];
-  const { title, content, filepath } = req.body;
-  console.log(req.body);
-  console.log(req.files);
+export const createPost = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const bucket: string = uploaderConfig.createImage.bucket;
+  const format: string = uploaderConfig.createImage.format;
+
+  const { title, content, file } = req.body;
+  console.log(title, content);
+  console.log(file);
 
   try {
-    const newPost = await prisma.post.create({
+    const imgUrl: string = await uploadService(req, bucket, format);
+    const newPost: any = await prisma.post.create({
       data: {
         title: title,
         content: content,
-        image: filepath,
+        image: `${imgUrl}`,
         author: {
           //@ts-ignore
           connect: { id: req.userId },
@@ -68,7 +74,7 @@ export const createPost = async (req: Request, res: Response) => {
       res.status(400).json("error");
     }
 
-    res.status(200).json({});
+    // res.status(200).json("se");
   } catch (error) {
     res.status(500).json(error);
   }
