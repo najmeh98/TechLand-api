@@ -6,6 +6,9 @@ import { Authentication, Login } from "./modules/auth";
 import multer from "multer";
 import { auth } from "./utilis/authenticate";
 import { createPost, upload } from "./modules/CreatePost";
+import { Request, Response } from "express";
+import { Posts } from "./modules/post";
+import { getAllPost } from "./modules/getAllPost";
 
 dotenv.config();
 const app = express();
@@ -21,12 +24,22 @@ app.get("/", (req, res) => {
   console.log("already Done!");
   res.json("Hello World!");
 });
+//router --> /add فقط برای تست نوشتم
 
-app.post("/api/data/add", (req, res) => {
-  console.log("req.file:", req.file);
-  console.log("req.body", req.body);
-  let body = req.file;
-  res.status(200).json({ body });
+app.post("/api/data/add", (req: Request, res: Response) => {
+  try {
+    const { title, content } = req.body;
+    console.log("req.file:", req.files);
+    console.log("req.body", req.body);
+
+    if (!req.files) {
+      res.send("File was not found");
+      return;
+    }
+    res.status(200).json({ title, content });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 });
 
 app.listen(port, () => {
@@ -43,7 +56,13 @@ app.post("/api/user/auth", Authentication);
 app.post("/api/data/add-post", createPost);
 
 //get Post
-app.get("/api/data/getAllpost/:id");
+app.get("/api/data/getAllpost/:id", getAllPost);
+
+//get user
+app.get("/api/data/get-user", (req: Request, res: Response) => {});
+
+//post
+app.post("/api/data/post", Posts);
 
 // const spacesEndpoint = new AWS.Endpoint(
 //   "https://s3.ir-thr-at1.arvanstorage.com"
