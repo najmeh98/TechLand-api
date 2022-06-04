@@ -18,13 +18,13 @@ export const Login = async (req: Request, res: Response) => {
       // @ts-ignore
       const token = jwt.sign(User.id, process.env.JWT_TOKEN);
       res.status(200).json({
-        // user: {
-        id: User.id,
-        email: User.email,
-        // },
         status: 1,
-        message: "Login successfull",
-        token,
+        user: {
+          id: User.id,
+          email: User.email,
+          message: "Login successfull",
+          token,
+        },
       });
       // } else {
       //   return res.status(400).send({ message: "invalid password" });
@@ -66,13 +66,13 @@ export const Authentication = async (req: Request, res: Response) => {
           .status(200)
           .header("token", token)
           .json({
-            user: {
-              id: newUser.id,
-              email: newUser.email,
-              fullName: newUser.name,
-            },
             status: 1,
-            token,
+            user: {
+              email: newUser.email,
+              id: newUser.id,
+              fullName: newUser.name,
+              token,
+            },
           });
       } else {
         res.status(400).json("error");
