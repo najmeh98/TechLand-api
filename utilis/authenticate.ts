@@ -6,9 +6,13 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
     if (process.env.JWT_TOKEN) {
       const tokenUserId = jwt.verify(token, process.env.JWT_TOKEN);
-      //@ts-ignore
-      req.userId = tokenUserId;
+      // const tokenUserEmail = jwt.
+      console.log("tokenUserId", tokenUserId);
 
+      //@ts-ignore
+      req.userId = tokenUserId.userId;
+      //@ts-ignore
+      console.log(req.userId);
       return next();
     }
   } catch (error) {
