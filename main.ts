@@ -5,46 +5,47 @@ import { Authentication, Login } from "./modules/auth";
 // import fileUpload from "express-fileupload";
 import multer from "multer";
 import { auth } from "./utilis/authenticate";
-import { createPost, upload } from "./modules/CreatePost";
+import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { Posts } from "./modules/post";
-import { getAllPost } from "./modules/getAllPost";
+import { GetAllPost } from "./modules/getAllPost";
+import fileUpload from "express-fileupload";
+import { DeletePost } from "./modules/deletePost";
+import { prisma } from "./utilis/prisma";
+import { EditPost } from "./modules/editPost";
+import { CreatePost } from "./modules/createPost";
+import crypto from "crypto";
+import { userInfo } from "./modules/userInfo";
+import { getPost } from "./modules/getPost";
+import { userValid } from "./modules/userValid";
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 // app.use(fileUpload());
 
 // ********* Routes ***********
 
 const port = 7000;
 
+app.use(fileUpload()); // Don't forget this line!
+
+app.post("/upload", function (req, res) {
+  if (req.files === undefined) {
+    return;
+  }
+  console.log(req.files);
+  res.send("UPLOADED!!!");
+});
+
 app.get("/", (req, res) => {
   console.log("already Done!");
   res.json("Hello World!");
 });
-//router --> /add فقط برای تست نوشتم
 
-app.post("/api/data/add", (req: Request, res: Response) => {
-  try {
-    const { title, content } = req.body;
-    console.log("req.file:", req.files);
-    console.log("req.body", req.body);
-
-    if (!req.files) {
-      res.send("File was not found");
-      return;
-    }
-    res.status(200).json({ title, content });
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+app.delete("/api/data/deletePost/:id", auth, DeletePost);
 
 // Login
 app.post("/api/user/login", Login);
@@ -53,16 +54,40 @@ app.post("/api/user/login", Login);
 app.post("/api/user/auth", Authentication);
 
 // Create Post
-app.post("/api/data/add-post", createPost);
+app.post("/api/data/add-post", auth, CreatePost);
 
+//Edit Post
+app.post("/api/data/editPost/:id", EditPost);
 //get Post
-app.get("/api/data/getAllpost/:id", getAllPost);
+app.post("/api/data/getAllpost/:id", auth, GetAllPost);
 
 //get user
-app.get("/api/data/get-user", (req: Request, res: Response) => {});
+app.post("/api/data/getUser/:id/:slug", auth, userInfo);
 
-//post
+//get post
+app.get("/api/data/getPost/:id", getPost);
+
+// user valid
+app.post("/api/data/userValid", auth, userValid);
+
+//get list of posts
 app.post("/api/data/post", Posts);
+
+app.get("/", (req, res) => {
+  const secret = "GfG";
+  const hash: any = crypto
+    .createHmac("sha256", secret)
+    .update("GeeksforGeeks")
+    .digest("hex");
+  if (hash) {
+    console.log(hash);
+  } else {
+    console.log("does not excited");
+  }
+
+  console.log("already Done!");
+  res.json({ hash });
+});
 
 // const spacesEndpoint = new AWS.Endpoint(
 //   "https://s3.ir-thr-at1.arvanstorage.com"
@@ -102,3 +127,7 @@ app.post("/api/data/post", Posts);
 //     return answer;
 //   }
 // };
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
