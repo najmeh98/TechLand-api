@@ -14,23 +14,30 @@ export const Login = async (req: Request, res: Response) => {
     if (User) {
       const compare = await bcrypt.compare(password, User.password);
 
+      const user = {
+        userId: User.id,
+        isAdmin: User.isAdmin,
+      };
+
       // if (compare) {
       // @ts-ignore
-      const token = jwt.sign(User.id, process.env.JWT_TOKEN);
+      const token = jwt.sign(user, process.env.JWT_TOKEN);
+
       res.status(200).json({
-        status: 1,
         user: {
           id: User.id,
           email: User.email,
-          message: "Login successfull",
+          fullName: User.name,
           token,
         },
+        status: 1,
+        message: "Login successfull",
       });
       // } else {
       //   return res.status(400).send({ message: "invalid password" });
       // }
     } else {
-      res.status(400).json("error");
+      res.status(400).json("There is no user with this profile");
     }
   } catch (error) {
     res.status(500).json(error);
@@ -46,7 +53,7 @@ export const Authentication = async (req: Request, res: Response) => {
     });
 
     if (User) {
-      return res.status(404).json({ error: "Email already exists" });
+      return res.status(400).json({ error: "Email already exists" });
     }
     bcrypt.hash(password, 10, async (err, hash) => {
       const newUser = await prisma.user.create({
@@ -66,16 +73,16 @@ export const Authentication = async (req: Request, res: Response) => {
           .status(200)
           .header("token", token)
           .json({
-            status: 1,
             user: {
               email: newUser.email,
               id: newUser.id,
               fullName: newUser.name,
               token,
             },
+            status: 1,
           });
       } else {
-        res.status(400).json("error");
+        res.status(401).json("Error creating user");
       }
     });
   } catch (error) {
@@ -83,3 +90,7 @@ export const Authentication = async (req: Request, res: Response) => {
     return res.status(500).json(error);
   }
 };
+//****
+// error Handling : 400 , 404, 500 , 200
+//
+//
