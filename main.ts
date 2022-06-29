@@ -57,21 +57,21 @@ app.post("/api/user/auth", Authentication);
 app.post("/api/data/add-post", auth, CreatePost);
 
 //Edit Post
-app.post("/api/data/editPost/:id", EditPost);
+app.post("/api/data/editPost/:id", auth, EditPost);
 //get Post
-app.post("/api/data/getAllpost/:id", auth, GetAllPost);
+app.post("/api/data/getAllpost/:id", GetAllPost);
 
 //get user
 app.post("/api/data/getUser/:id/:slug", auth, userInfo);
 
 //get post
-app.get("/api/data/getPost/:id", getPost);
+app.get("/api/data/getPost/:id", auth, getPost);
 
 // user valid
 app.post("/api/data/userValid", auth, userValid);
 
 //get list of posts
-app.post("/api/data/post", Posts);
+// app.post("/api/data/post", Posts);
 
 app.get("/", (req, res) => {
   const secret = "GfG";
