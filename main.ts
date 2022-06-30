@@ -59,7 +59,7 @@ app.post("/api/data/add-post", auth, CreatePost);
 //Edit Post
 app.post("/api/data/editPost/:id", auth, EditPost);
 //get Post
-app.post("/api/data/getAllpost/:id", GetAllPost);
+app.post("/api/data/getAllpost/:id", auth, GetAllPost);
 
 //get user
 app.post("/api/data/getUser/:id/:slug", auth, userInfo);
