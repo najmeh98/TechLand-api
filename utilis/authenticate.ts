@@ -6,7 +6,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
     if (process.env.JWT_TOKEN) {
       const tokenUserId = jwt.verify(token, process.env.JWT_TOKEN);
-      // const tokenUserEmail = jwt.
+
       console.log("tokenUserId", tokenUserId);
 
       //@ts-ignore
@@ -16,6 +16,6 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
       return next();
     }
   } catch (error) {
-    res.status(403).send("failed");
+    res.status(403).send("error from authorization");
   }
 };
