@@ -61,17 +61,17 @@ export const CreatePost = async (
 
   console.log(title, content);
 
-  // const imgUrl: string = await uploadService(req, bucket, format);
-  // if (imgUrl) {
-  //   console.log(imgUrl);
-  // }
+  const imgUrl: string = await uploadService(req, bucket, format);
+  if (imgUrl) {
+    console.log(imgUrl);
+  }
   try {
     const newPost: any = await prisma.post.create({
       data: {
         title: title,
         content: content,
-        // image: `${imgUrl}`,
-        image: "",
+        image: `${imgUrl}`,
+        // image: "",
         author: {
           //@ts-ignore
           connect: { id: req.userId },
