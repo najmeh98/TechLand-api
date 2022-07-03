@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { prisma } from "../utilis/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+
 export const Login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
