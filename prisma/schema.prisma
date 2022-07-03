@@ -15,7 +15,7 @@ model User {
   skill String?
   bio String?
   createdAt DateTime @default(now())
-  role Role @default(USER)
+  // role Role @default(USER)
   post      Post[]
   isAdmin  Boolean  @default(false)
   // profile Profile?
