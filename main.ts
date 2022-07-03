@@ -7,7 +7,6 @@ import multer from "multer";
 import { auth } from "./utilis/authenticate";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { Posts } from "./modules/post";
 import { GetAllPost } from "./modules/getAllPost";
 import fileUpload from "express-fileupload";
 import { DeletePost } from "./modules/deletePost";
@@ -69,9 +68,6 @@ app.get("/api/data/getPost/:id", auth, getPost);
 
 // user valid
 app.post("/api/data/userValid", auth, userValid);
-
-//get list of posts
-// app.post("/api/data/post", Posts);
 
 app.get("/", (req, res) => {
   const secret = "GfG";
