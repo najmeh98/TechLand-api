@@ -1,5 +1,6 @@
 import AWS from "aws-sdk";
-import { createHmac } from "crypto";
+// import { createHmac } from "crypto";
+import crypto from "crypto";
 
 const spaceEndpoint = new AWS.Endpoint(
   "https://s3.ir-thr-at1.arvanstorage.com"
@@ -16,7 +17,7 @@ const s3 = new AWS.S3({
 
 // bucket
 export const uploaderConfig: any = {
-  createImage: { bucket: "imagecategory", format: "" },
+  createImage: { bucket: "imagecategory", format: "jpg" },
 };
 
 export const uploadService = async (
@@ -24,14 +25,17 @@ export const uploadService = async (
   bucket: any,
   format: any
 ): Promise<string> => {
-  const data: any = Date();
+  const data: any = new Date();
   const hashKey: any = process.env.UPLEADER_HASH_KEY;
   const hashAlg: any = process.env.HASH_ALGORITHM;
   // Initializing the createHmac method using secret
   // data to be encoded
   // Defining encoding
-  const filename: any = createHmac(hashAlg, hashKey).update(data).digest("hex");
-
+  const filename = crypto
+    .createHmac(hashAlg, hashKey)
+    .update(data)
+    .digest("hex");
+  console.log(filename);
   if (!req.files) {
     return "no image access";
   } else {
