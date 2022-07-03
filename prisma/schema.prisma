@@ -12,49 +12,58 @@ model User {
   email     String   @unique(map: "User_email_key") @db.VarChar(255)
   name      String?  @db.VarChar(225)
   password  String   @db.VarChar(225)
+  skill String?
+  bio String?
   createdAt DateTime @default(now())
   role Role @default(USER)
-  Post      Post[]
-  profile Profile?
+  post      Post[]
+  isAdmin  Boolean  @default(false)
+  // profile Profile?
+
+}
+
+model Admin {
+ id Int   @id @default(autoincrement())
+ name  String 
+ family String
+ email String 
+ password String 
+ username String
+ createdAt DateTime @default(now())
 }
 
 
-model Profile {
-  id Int  @id @default(autoincrement())
-  bio  String
-  user User  @relation(fields: [userId] ,references: [id])
-  userId Int
-}
+
+// model Profile {
+//   id Int  @id @default(autoincrement())
+//   password  String?
+//   newpassword String?
+//   Renewpassword   String?
+//   skill String?
+//   bio  String?
+//   user User?  @relation(fields: [userId] ,references: [id])
+//   userId Int?
+// }
 
 model Post {
   id Int    @id @default(autoincrement())
+  // parent_id    Category  @relation(fields: [categoryId] , references: [id])
   title  String  @db.VarChar(255)
   content String?  @db.VarChar(255)
   image  String
-  author  User? @relation(fields: [authorId] , references: [id])
-  authorId Int?
+  author  User @relation(fields: [authorId] , references: [id])
+  authorId Int
   published  Boolean @default(false)
-  // categories post_type
   createdAt DateTime  @default(now())
+   categoryId Int
   updatedAt DateTime  @updatedAt
+   category   Category   @relation(fields:[categoryId],   references: [id])
 
 }
 
-// model Category {
-//   id Int   @id @default(autoincrement())
-//   name String
-//   posts  Post[] @relation(references: [id])
-// }
-
-// enum post_type {
-//   other
-//   news
-//   fun
-//   personal
-//   academic
-// }
-enum Role {
-  USER
-  ADMIN
+model Category {
+  id Int   @id @default(autoincrement())
+  name String
+  posts  Post[] 
 }
 
