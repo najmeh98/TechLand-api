@@ -43,23 +43,35 @@ export const upload: any = multer({
   limits: { fileSize: 1024 * 1024 * 5 },
 }).single("file");
 
-export const createPost = async (
+export const CreatePost = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   const bucket: string = uploaderConfig.createImage.bucket;
   const format: string = uploaderConfig.createImage.format;
 
-  const { title, content } = req.body;
+  if (bucket) {
+    console.log(bucket);
+  }
+
+  const { title, content }: { title: string; content: string } = req.body;
+
+  const files: any = req.files;
+  console.log(files);
+
   console.log(title, content);
 
+  // const imgUrl: string = await uploadService(req, bucket, format);
+  // if (imgUrl) {
+  //   console.log(imgUrl);
+  // }
   try {
-    const imgUrl: string = await uploadService(req, bucket, format);
     const newPost: any = await prisma.post.create({
       data: {
         title: title,
         content: content,
-        image: `${imgUrl}`,
+        // image: `${imgUrl}`,
+        image: "",
         author: {
           //@ts-ignore
           connect: { id: req.userId },
@@ -72,8 +84,6 @@ export const createPost = async (
     } else {
       res.status(400).json("error");
     }
-
-    // res.status(200).json("se");
   } catch (error) {
     res.status(500).json(error);
   }
