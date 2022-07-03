@@ -4,12 +4,16 @@ import { Request, Response } from "express";
 export const GetAllPost = async (req: Request, res: Response) => {
   const { id } = req.body;
 
+  // const userid: number = req.userId;
   // try {
-  console.log(id);
+  //@ts-ignore
+  console.log("userid", req.userId);
 
   const posts = await prisma.user.findFirst({
     where: {
-      id: Number(id),
+      // id: Number(id),
+      //@ts-ignore
+      id: req.userId,
     },
     include: {
       //@ts-ignore
@@ -18,7 +22,16 @@ export const GetAllPost = async (req: Request, res: Response) => {
   });
 
   if (posts) {
-    res.status(200).json(posts);
+    const data = {
+      fullName: posts.name,
+      email: posts.email,
+      bio: posts.bio,
+      id: posts.id,
+      skill: posts.skill,
+      post: posts.post,
+    };
+
+    res.status(200).json(data);
   } else {
     res.status(400).json("No post found");
   }
