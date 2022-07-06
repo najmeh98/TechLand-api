@@ -2,7 +2,7 @@ import { prisma } from "../utilis/prisma";
 import { Request, Response } from "express";
 
 export const GetAllPost = async (req: Request, res: Response) => {
-  const { id } = req.body;
+  const id: number = req.body.id;
 
   // const userid: number = req.userId;
   // try {
@@ -22,7 +22,7 @@ export const GetAllPost = async (req: Request, res: Response) => {
   });
 
   if (posts) {
-    const data = {
+    const data: any = {
       fullName: posts.name,
       email: posts.email,
       bio: posts.bio,
