@@ -3,7 +3,7 @@ import { prisma } from "../utilis/prisma";
 
 export const DeletePost = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id: any = req.params.id;
     console.log("deleteid", id);
     const deletepost = await prisma.post.delete({
       where: { id: Number(id) },
