@@ -6,11 +6,17 @@ export const userInfo = async (req: Request, res: Response) => {
   try {
     const { id, slug }: any = req.params;
     let data: any;
-    const { password, newpassword, Renewpassword, skill, bio } = req.body;
+
+    const password: string = req.body.password;
+    const newpassword: string = req.body.newpassword;
+    const Renewpassword: string = req.body.Renewpassword;
+    const skill: string = req.body.skill;
+    const bio: string = req.body.bio;
+
     if (id) {
       console.log("id", id);
       console.log("slug", slug);
-      const User = await prisma.user.findFirst({
+      const User: any = await prisma.user.findFirst({
         where: { id: Number(id) },
       });
 
@@ -20,7 +26,7 @@ export const userInfo = async (req: Request, res: Response) => {
         if (compare) {
           if (newpassword === Renewpassword) {
             bcrypt.hash(newpassword, 10, async (err, hash) => {
-              const updateInfo = await prisma.user.update({
+              const updateInfo: any = await prisma.user.update({
                 where: {
                   id: Number(id),
                 },
