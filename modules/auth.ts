@@ -5,7 +5,13 @@ import jwt from "jsonwebtoken";
 
 export const Login = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    const email: string = req.body.email;
+    const password: any = req.body.password;
+
+    if (!email || !password) {
+      return res.status(400).json("user error");
+    }
+
     const User = await prisma.user.findFirst({
       where: {
         email: email,
@@ -19,10 +25,9 @@ export const Login = async (req: Request, res: Response) => {
         userId: User.id,
         isAdmin: User.isAdmin,
       };
+      const jwtToken: any = process.env.JWT_TOKEN;
 
-      // if (compare) {
-      // @ts-ignore
-      const token = jwt.sign(user, process.env.JWT_TOKEN);
+      const token = jwt.sign(user, jwtToken);
 
       res.status(200).json({
         user: {
@@ -31,14 +36,9 @@ export const Login = async (req: Request, res: Response) => {
           fullName: User.name,
           token,
         },
-        status: 1,
-        message: "Login successfull",
       });
-      // } else {
-      //   return res.status(400).send({ message: "invalid password" });
-      // }
     } else {
-      res.status(400).json("There is no user with this profile");
+      res.status(404).json("There is no user with this profile");
     }
   } catch (error) {
     res.status(500).json(error);
@@ -47,8 +47,13 @@ export const Login = async (req: Request, res: Response) => {
 
 export const Authentication = async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.body;
+    const name: string = req.body.name;
+    const email: string = req.body.email;
+    const password: any = req.body.password;
 
+    if (!name || !password || !email) {
+      return res.status(400).json("error");
+    }
     const User = await prisma.user.findFirst({
       where: { email: email },
     });
@@ -57,7 +62,7 @@ export const Authentication = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Email already exists" });
     }
     bcrypt.hash(password, 10, async (err, hash) => {
-      const newUser = await prisma.user.create({
+      const newUser: any = await prisma.user.create({
         data: {
           name: name,
           email: email,
@@ -65,11 +70,10 @@ export const Authentication = async (req: Request, res: Response) => {
         },
       });
 
-      // @ts-ignore
-      const token = jwt.sign(newUser.id, process.env.JWT_TOKEN);
+      const jwtToken: any = process.env.JWT_TOKEN;
+      const token = jwt.sign(newUser.id, jwtToken);
 
       if (newUser) {
-        // res.status(200).json(newUser);
         return res
           .status(200)
           .header("token", token)
@@ -80,14 +84,12 @@ export const Authentication = async (req: Request, res: Response) => {
               fullName: newUser.name,
               token,
             },
-            status: 1,
           });
       } else {
         res.status(401).json("Error creating user");
       }
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json(error);
   }
 };
