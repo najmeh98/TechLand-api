@@ -10,8 +10,12 @@ app.use(fileUpload()); // Don't forget this line!
 export const EditPost = async (req: Request, res: Response) => {
   try {
     const { id }: any = req.params;
-    const { title, content }: { title: string; content: string } = req.body;
+
+    const title: string = req.body.title;
+    const content: string = req.body.content;
+
     const files: any = req.files;
+
     const bucket: string = uploaderConfig.createImage.bucket;
     const format: string = uploaderConfig.createImage.format;
 
@@ -22,7 +26,7 @@ export const EditPost = async (req: Request, res: Response) => {
     // console.debug(await uploadService(req, bucket, format));
 
     const findpost = await prisma.post.findFirst({ where: { id: Number(id) } });
-    let data;
+    let data: any;
     if (findpost) {
       console.log("body", title, content);
       console.log(id);

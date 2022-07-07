@@ -11,7 +11,7 @@ export const getPost = async (req: Request, res: Response) => {
       },
     });
 
-    const data = {
+    const data: any = {
       title: post?.title,
       content: post?.content,
       image: post?.image,
