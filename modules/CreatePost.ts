@@ -50,15 +50,15 @@ export const CreatePost = async (
   const bucket: string = uploaderConfig.createImage.bucket;
   const format: string = uploaderConfig.createImage.format;
 
-  if (bucket) {
-    console.log(bucket);
-  }
+  // if (bucket) {
+  //   console.log(bucket);
+  // }
 
-  const { title, content }: { title: string; content: string } = req.body;
-
+  const title: string = req.body.title;
+  const content: string = req.body.content;
   const files: any = req.files;
-  console.log(files);
 
+  console.log(files);
   console.log(title, content);
 
   const imgUrl: string = await uploadService(req, bucket, format);
