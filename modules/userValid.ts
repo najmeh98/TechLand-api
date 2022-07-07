@@ -3,10 +3,9 @@ import { prisma } from "../utilis/prisma";
 import jwt from "jsonwebtoken";
 export const userValid = async (req: Request, res: Response) => {
   try {
-    let Usertoken: any;
-
     //@ts-ignore
     console.log(req.userId);
+    const jwttoken: any = process.env.JWT_TOKEN;
 
     const userInfo = await prisma.user.findFirst({
       where: {
@@ -18,13 +17,13 @@ export const userValid = async (req: Request, res: Response) => {
       },
     });
     if (userInfo) {
-      Usertoken = {
+      const usertoken: any = {
         id: userInfo?.id,
         isAdmin: userInfo?.isAdmin,
       };
 
       if (process.env.JWT_TOKEN) {
-        const token = jwt.sign(Usertoken, process.env.JWT_TOKEN);
+        const token = jwt.sign(usertoken, jwttoken);
 
         const user = {
           id: userInfo?.id,
