@@ -12,6 +12,8 @@ export const Login = async (req: Request, res: Response) => {
       return res.status(400).json("user error");
     }
 
+    const jwtToken: any = process.env.JWT_TOKEN;
+
     const User = await prisma.user.findFirst({
       where: {
         email: email,
@@ -21,13 +23,14 @@ export const Login = async (req: Request, res: Response) => {
     if (User) {
       const compare = await bcrypt.compare(password, User.password);
 
-      const user = {
-        userId: User.id,
-        isAdmin: User.isAdmin,
-      };
-      const jwtToken: any = process.env.JWT_TOKEN;
+      // const user = {
+      //   userId: User.id,
+      //   isAdmin: User.isAdmin,
+      // };
 
-      const token = jwt.sign(user, jwtToken);
+      const userId: any = User.id;
+
+      const token = jwt.sign(userId, jwtToken);
 
       res.status(200).json({
         user: {
