@@ -17,7 +17,8 @@ import crypto from "crypto";
 import { userInfo } from "./modules/user/users/userInfo";
 import { getPost } from "./modules/user/post/getPost";
 import { userValid } from "./modules/user/users/userValid";
-import { register } from "./modules/admin/adminauth";
+import { adminLogin, register } from "./modules/admin/adminauth";
+import { getAllusers } from "./modules/admin/users/getAllusers";
 
 dotenv.config();
 const app = express();
@@ -46,7 +47,6 @@ app.get("/", (req, res) => {
 });
 
 // user
-
 app.delete("/api/data/deletePost/:id", auth, DeletePost);
 // Login
 app.post("/api/user/login", Login);
@@ -66,8 +66,11 @@ app.get("/api/data/getPost/:id", auth, getPost);
 app.post("/api/data/userValid", auth, userValid);
 
 //admin
-
 app.post("/api/admin/auth", register);
+//Login
+app.post("api/admin/login", adminLogin);
+// count of users
+app.post("api/data/admin/getAllusers", getAllusers);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
