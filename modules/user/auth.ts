@@ -9,37 +9,42 @@ export const Login = async (req: Request, res: Response) => {
     const password: any = req.body.password;
 
     if (!email || !password) {
-      return res.status(400).json("user error");
+      return res.status(400).json("data problem");
     }
-
-    const jwtToken: any = process.env.JWT_TOKEN;
 
     const User = await prisma.user.findFirst({
       where: {
         email: email,
+        password: password,
       },
     });
 
+    const jwtToken: any = process.env.JWT_TOKEN;
+
     if (User) {
-      const compare = await bcrypt.compare(password, User.password);
-
-      // const user = {
-      //   userId: User.id,
-      //   isAdmin: User.isAdmin,
-      // };
-
       const userId: any = User.id;
-
       const token = jwt.sign(userId, jwtToken);
+      const compare = await bcrypt.compare(password, User.password);
+      if (compare) {
+        const update = await prisma.user.update({
+          where: { email: email },
+          data: {
+            updatedAt: new Date().toISOString(),
+            token: token,
+          },
+        });
 
-      res.status(200).json({
-        user: {
-          id: User.id,
-          email: User.email,
-          fullName: User.name,
-          token,
-        },
-      });
+        res.status(200).json({
+          user: {
+            id: User.id,
+            email: User.email,
+            fullName: User.name,
+            token,
+          },
+        });
+      } else {
+        res.status(401).json("password is invalid");
+      }
     } else {
       res.status(404).json("There is no user with this profile");
     }
@@ -70,6 +75,7 @@ export const Authentication = async (req: Request, res: Response) => {
           name: name,
           email: email,
           password: hash,
+          token: "",
         },
       });
 
