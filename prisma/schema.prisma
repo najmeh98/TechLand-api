@@ -17,7 +17,8 @@ model User {
   createdAt DateTime @default(now())
   post      Post[]
   isAdmin  Boolean  @default(false)
- updatedAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  token     String    @unique
 }
 
 model Admin {
@@ -31,6 +32,7 @@ model Admin {
  phoneNumber  String @unique
  createdAt DateTime @default(now())
  updatedAt DateTime   @default(now())
+ token       String   @unique
 }
 
 

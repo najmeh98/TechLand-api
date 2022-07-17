@@ -3,6 +3,7 @@ import { prisma } from "../../utilis/prisma";
 import { createHmac } from "crypto";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { generateAcessToken, hashpassmethod } from "../../utilis/authenticate";
 
 // check data is not empty
 const dataValidation = (adInfo: any): boolean | undefined => {
@@ -55,6 +56,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         password: pass,
         phoneNumber: adInfo.phone,
         address: adInfo.address,
+        token: "",
       },
     });
 
@@ -81,41 +83,59 @@ export const adminLogin = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const email: string = req.body.email;
-  const password: string = req.body.password;
+  try {
+    const email: string = req.body.email;
+    const password: string = req.body.password;
 
-  if (!email || !password) {
-    res.status(401).json("data problem");
-  }
-  const user = await prisma.admin.findFirst({
-    where: {
-      email: email,
-      password: password,
-    },
-  });
-  const jwtToken: any = process.env.JWT_TOKEN;
+    console.log(email);
+    console.log(password);
 
-  if (user) {
-    const userId: any = user.id;
-    const token = jwt.sign(userId, jwtToken);
-
-    //compare password
-    const compare = await bcrypt.compare(password, user.password);
-
-    if (compare) {
-      const update = await prisma.admin.update({
-        where: { email: email },
-        data: {
-          updatedAt: new Date(),
-        },
-      });
-      if (update) {
-        res.status(200).json(update);
-      } else {
-        res.status(400).json("error");
-      }
+    if (!email || !password) {
+      res.status(400).json("data problem");
     }
-  } else {
-    res.status(404).json("not Found");
+
+    const user = await prisma.admin.findFirst({
+      where: {
+        email: email,
+        password: password,
+      },
+    });
+
+    const userId: any = user?.id;
+    const hashpassword: string | undefined = hashpassmethod(password);
+
+    const pass: string | undefined = user?.password;
+
+    const jwtToken: any = process.env.JWT_TOKEN;
+    const token = jwt.sign(userId, jwtToken);
+    console.log("token", token);
+    console.log(hashpassword);
+
+    if (user) {
+      const token: string = generateAcessToken(userId);
+
+      //   //compare password
+      //   // const compare = await bcrypt.compare(password, user.password);
+
+      if (pass === hashpassword) {
+        const update = await prisma.admin.update({
+          where: { email: email },
+          data: {
+            updatedAt: new Date(),
+            token: token,
+          },
+        });
+        console.log(update);
+        if (update) {
+          res.status(200).json(update);
+        } else {
+          res.status(404).json("error");
+        }
+      }
+    } else {
+      res.status(401).json("Unauthorized");
+    }
+  } catch (error) {
+    res.status(500).json(error);
   }
 };
