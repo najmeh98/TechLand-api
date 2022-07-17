@@ -4,11 +4,7 @@ import { Request, Response } from "express";
 export const GetAllPost = async (req: Request, res: Response) => {
   const id: number = req.body.id;
 
-  // const userid: number = req.userId;
   try {
-    //@ts-ignore
-    console.log("userid", req.userId);
-
     const posts = await prisma.user.findFirst({
       where: {
         id: Number(id),
@@ -16,7 +12,6 @@ export const GetAllPost = async (req: Request, res: Response) => {
         // id: req.userId,
       },
       include: {
-        //@ts-ignore
         post: true,
       },
     });
