@@ -68,7 +68,7 @@ app.post("/api/data/userValid", auth, userValid);
 //admin
 app.post("/api/admin/auth", register);
 //Login
-app.post("api/admin/login", adminLogin);
+app.post("/api/admin/login", adminLogin);
 // count of users
 app.post("api/data/admin/getAllusers", getAllusers);
 
