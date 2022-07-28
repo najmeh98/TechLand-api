@@ -10,7 +10,6 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     const tokenUserId = jwt.verify(token, jwttoken);
 
     console.log("tokenUserId", tokenUserId);
-
     //@ts-ignore
     req.userId = tokenUserId;
 
