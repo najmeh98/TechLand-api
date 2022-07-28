@@ -20,6 +20,7 @@ import { userValid } from "./modules/user/users/userValid";
 import { adminLogin, register } from "./modules/admin/adminauth";
 import { GetAllusers } from "./modules/admin/users/getAllusers";
 import { DeleteUser } from "./modules/admin/users/deleteUser";
+import { EditUserInfo } from "./modules/admin/users/editUserInfo";
 
 dotenv.config();
 const app = express();
@@ -73,7 +74,9 @@ app.post("/api/admin/login", adminLogin);
 // count of users
 app.get("/api/data/admin/getAllusers", GetAllusers);
 //delete user
-app.post("/api/data/admin/deleteUser/:id", DeleteUser);
+app.delete("/api/data/admin/deleteUser/:id", DeleteUser);
+// edit user info
+app.post("/api/data/admin/editUserInfo/:id", EditUserInfo);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
