@@ -56,7 +56,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         password: pass,
         phoneNumber: adInfo.phone,
         address: adInfo.address,
-        token: "",
+        token: "0",
       },
     });
 
@@ -97,23 +97,21 @@ export const adminLogin = async (
     const user = await prisma.admin.findFirst({
       where: {
         email: email,
-        password: password,
+        // password: password,
       },
     });
 
+    console.log(user);
     const userId: any = user?.id;
     const hashpassword: string | undefined = hashpassmethod(password);
 
     const pass: string | undefined = user?.password;
 
-    const jwtToken: any = process.env.JWT_TOKEN;
-    const token = jwt.sign(userId, jwtToken);
-    console.log("token", token);
     console.log(hashpassword);
 
     if (user) {
       const token: string = generateAcessToken(userId);
-
+      console.log(token);
       //   //compare password
       //   // const compare = await bcrypt.compare(password, user.password);
 
@@ -123,6 +121,16 @@ export const adminLogin = async (
           data: {
             updatedAt: new Date(),
             token: token,
+          },
+          select: {
+            name: true,
+            family: true,
+            email: true,
+            address: true,
+            phoneNumber: true,
+            username: true,
+            token: true,
+            id: true,
           },
         });
         console.log(update);
