@@ -10,15 +10,11 @@ export const DeleteUser = async (req: Request, res: Response) => {
     const deleteuser = await prisma.user.delete({
       where: { id: Number(id) },
     });
-    const finduser = await prisma.user.findFirst({
-      where: {
-        id: Number(id),
-      },
-    });
-    console.log(finduser);
 
-    if (finduser) {
-      res.status(200).json({ finduser, message: "user deleted successfuly" });
+    console.log(deleteuser);
+
+    if (deleteuser) {
+      res.status(200).json({ deleteuser, message: "user deleted successfuly" });
     } else {
       res.status(400).json("user does not delete");
     }
