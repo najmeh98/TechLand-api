@@ -9,9 +9,13 @@ datasource db {
 
 model User {
   id        Int       @id @default(autoincrement())
-  email     String   @unique(map: "User_email_key") @db.VarChar(255)
   name      String?  @db.VarChar(225)
+  family    String     
+  username String 
+  email     String   @unique(map: "User_email_key") @db.VarChar(255)
   password  String   @db.VarChar(225)
+  phoneNumber String   @unique
+  address String
   skill String?
   bio String?
   createdAt DateTime @default(now())
