@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { prisma } from "../../utilis/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { dataValidation } from "../../utilis/checkdata";
+import { generateAcessToken } from "../../utilis/authenticate";
 
 export const Login = async (req: Request, res: Response) => {
   try {
@@ -15,16 +17,18 @@ export const Login = async (req: Request, res: Response) => {
     const User = await prisma.user.findFirst({
       where: {
         email: email,
-        password: password,
       },
     });
 
-    const jwtToken: any = process.env.JWT_TOKEN;
-
     if (User) {
       const userId: any = User.id;
-      const token = jwt.sign(userId, jwtToken);
+
+      //build token
+      const token: string = generateAcessToken(userId);
+
+      //compare pass
       const compare = await bcrypt.compare(password, User.password);
+
       if (compare) {
         const update = await prisma.user.update({
           where: { email: email },
@@ -33,15 +37,16 @@ export const Login = async (req: Request, res: Response) => {
             token: token,
           },
         });
-
-        res.status(200).json({
-          user: {
-            id: User.id,
-            email: User.email,
-            fullName: User.name,
-            token,
-          },
-        });
+        if (update) {
+          res.status(200).json({
+            user: {
+              id: User.id,
+              email: User.email,
+              fullName: User.name,
+              token,
+            },
+          });
+        }
       } else {
         res.status(401).json("password is invalid");
       }
@@ -55,11 +60,16 @@ export const Login = async (req: Request, res: Response) => {
 
 export const Authentication = async (req: Request, res: Response) => {
   try {
-    const name: string = req.body.name;
-    const email: string = req.body.email;
-    const password: any = req.body.password;
+    const userInfo: any = req.body.userInfo;
 
-    if (!name || !password || !email) {
+    const checkdata: boolean | undefined = dataValidation(userInfo);
+
+    const email: string = req.body.email;
+    const password: any = userInfo.password;
+
+    // const name: string = req.body.name;
+
+    if (checkdata == false) {
       return res.status(400).json("error");
     }
     const User = await prisma.user.findFirst({
@@ -72,9 +82,13 @@ export const Authentication = async (req: Request, res: Response) => {
     bcrypt.hash(password, 10, async (err, hash) => {
       const newUser: any = await prisma.user.create({
         data: {
-          name: name,
-          email: email,
+          name: userInfo.name,
+          family: userInfo.family,
+          username: userInfo.username,
+          email: userInfo.email,
           password: hash,
+          address: userInfo.address,
+          phoneNumber: userInfo.phone,
           token: "",
         },
       });
