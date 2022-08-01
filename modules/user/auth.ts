@@ -10,6 +10,7 @@ export const Login = async (req: Request, res: Response) => {
     const email: string = req.body.email;
     const password: any = req.body.password;
 
+    //All fields must be filled'
     if (!email || !password) {
       return res.status(400).json("data problem");
     }
