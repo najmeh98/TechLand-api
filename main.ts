@@ -31,7 +31,7 @@ app.use(express.json());
 
 // ********* Routes ***********
 
-const port = 7000;
+const port = 3001;
 
 app.use(fileUpload()); // Don't forget this line!
 
