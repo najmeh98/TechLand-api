@@ -12,7 +12,6 @@ import fileUpload from "express-fileupload";
 import { DeletePost } from "./modules/user/post/deletePost";
 import { prisma } from "./utilis/prisma";
 import { EditPost } from "./modules/user/post/editPost";
-import { CreatePost } from "./modules/user/post/createPost";
 import crypto from "crypto";
 import { userInfo } from "./modules/user/users/userInfo";
 import { getPost } from "./modules/user/post/getPost";
@@ -21,6 +20,10 @@ import { adminLogin, register } from "./modules/admin/adminauth";
 import { GetAllusers } from "./modules/admin/users/getAllusers";
 import { DeleteUser } from "./modules/admin/users/deleteUser";
 import { EditUserInfo } from "./modules/admin/users/editUserInfo";
+import { adminprofile } from "./modules/admin/admins/adminprofile";
+import { PostCreate } from "./modules/user/post/postcreate";
+import { GetallInfo } from "./modules/admin/admins/getAllInfo";
+import { adminCreate } from "./modules/admin/admins/adminCreate";
 
 dotenv.config();
 const app = express();
@@ -55,7 +58,7 @@ app.post("/api/user/login", Login);
 // Authorization
 app.post("/api/user/auth", Authentication);
 // Create Post
-app.post("/api/data/add-post", auth, CreatePost);
+app.post("/api/data/add-post", auth, PostCreate);
 //Edit Post
 app.post("/api/data/editPost/:id", auth, EditPost);
 //get Post
@@ -77,6 +80,12 @@ app.get("/api/data/admin/getAllusers", GetAllusers);
 app.delete("/api/data/admin/deleteUser/:id", DeleteUser);
 // edit user info
 app.post("/api/data/admin/editUserInfo/:id", EditUserInfo);
+//profile of admin
+app.post("/api/admin/profile/:id", adminprofile);
+//get all info
+app.post("/api/data/allInfo", GetallInfo);
+//create admin
+app.post("/api/data/admin/createAdmin/:id", adminCreate);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
