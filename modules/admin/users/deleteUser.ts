@@ -4,9 +4,10 @@ import { prisma } from "../../../utilis/prisma";
 export const DeleteUser = async (req: Request, res: Response) => {
   try {
     const id: any = req.params.id;
-    console.log("body", req.body);
     console.log("params", req.params.id);
-    // console.log(id);
+
+    if (!id) return;
+
     const deleteuser = await prisma.user.delete({
       where: { id: Number(id) },
     });
