@@ -50,6 +50,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const result = await prisma.admin.create({
       data: {
         name: adInfo.name,
+        id: adInfo.id,
         family: adInfo.family,
         email: adInfo.email,
         username: adInfo.username,
