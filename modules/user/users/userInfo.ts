@@ -42,7 +42,6 @@ export const userInfo = async (req: Request, res: Response) => {
                   skill: updateInfo.skill,
                   fullName: updateInfo.name,
                   email: updateInfo.email,
-                  role: updateInfo.role,
                 };
               }
 
