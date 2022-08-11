@@ -10,14 +10,14 @@ export const GetAllusers = async (
   try {
     const result = await prisma.user.findMany({
       select: {
+        id: true,
         name: true,
+        family: true,
+        username: true,
         email: true,
         phoneNumber: true,
-        family: true,
-        createdAt: true,
-        id: true,
         address: true,
-        username: true,
+        createdAt: true,
       },
     });
     if (result) {
