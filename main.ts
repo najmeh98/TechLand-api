@@ -24,6 +24,9 @@ import { adminprofile } from "./modules/admin/admins/adminprofile";
 import { PostCreate } from "./modules/user/post/postcreate";
 import { GetallInfo } from "./modules/admin/admins/getAllInfo";
 import { adminCreate } from "./modules/admin/admins/adminCreate";
+import { postsCount } from "./modules/admin/posts/postsCount";
+import { usersCount } from "./modules/admin/users/usersCount";
+import { changePassword } from "./modules/admin/admins/changePassword";
 
 dotenv.config();
 const app = express();
@@ -85,7 +88,13 @@ app.post("/api/admin/profile/:id", adminprofile);
 //get all info
 app.post("/api/data/allInfo", GetallInfo);
 //create admin
-app.post("/api/data/admin/createAdmin/:id", adminCreate);
+app.post("/api/data/admin/adminCreate", adminCreate);
+//count of posts & users
+app.post("/api/data/count", postsCount);
+//count of Users
+// app.post("/api/data/admin/count", usersCount);
+//change password
+app.post("/api/admin/changePassword", changePassword);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
