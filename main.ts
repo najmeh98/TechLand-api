@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { Authentication, Login } from "./modules/user/auth";
 // import fileUpload from "express-fileupload";
 import multer from "multer";
-import { auth } from "./utilis/authenticate";
+import { auth, generateAcessToken } from "./utilis/authenticate";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { GetAllPost } from "./modules/user/post/getAllPost";
@@ -27,6 +27,7 @@ import { adminCreate } from "./modules/admin/admins/adminCreate";
 import { postsCount } from "./modules/admin/posts/postsCount";
 import { usersCount } from "./modules/admin/users/usersCount";
 import { changePassword } from "./modules/admin/admins/changePassword";
+import { userPassword } from "./modules/user/users/userPassword";
 
 dotenv.config();
 const app = express();
@@ -72,29 +73,31 @@ app.post("/api/data/getUser/:id/:slug", auth, userInfo);
 app.get("/api/data/getPost/:id", auth, getPost);
 // user valid
 app.post("/api/data/userValid", auth, userValid);
+// change password
+app.post("/api/data/user/cahngePassword", auth, userPassword);
 
 //admin
 app.post("/api/admin/auth", register);
 //Login
 app.post("/api/admin/login", adminLogin);
 // count of users
-app.get("/api/data/admin/getAllusers", GetAllusers);
+app.get("/api/data/admin/getAllusers", auth, GetAllusers);
 //delete user
-app.delete("/api/data/admin/deleteUser/:id", DeleteUser);
+app.delete("/api/data/admin/deleteUser/:id", auth, DeleteUser);
 // edit user info
-app.post("/api/data/admin/editUserInfo/:id", EditUserInfo);
+app.post("/api/data/admin/editUserInfo/:id", auth, EditUserInfo);
 //profile of admin
-app.post("/api/admin/profile/:id", adminprofile);
+app.post("/api/admin/profile/:id", auth, adminprofile);
 //get all info
-app.post("/api/data/allInfo", GetallInfo);
+app.post("/api/data/allInfo", auth, GetallInfo);
 //create admin
-app.post("/api/data/admin/adminCreate", adminCreate);
+app.post("/api/data/admin/adminCreate", auth, adminCreate);
 //count of posts & users
-app.post("/api/data/count", postsCount);
+app.post("/api/data/count", auth, postsCount);
 //count of Users
 // app.post("/api/data/admin/count", usersCount);
 //change password
-app.post("/api/admin/changePassword", changePassword);
+app.post("/api/admin/changePassword", auth, changePassword);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
