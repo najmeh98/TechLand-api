@@ -50,7 +50,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const result = await prisma.admin.create({
       data: {
         name: adInfo.name,
-        id: adInfo.id,
+        // id: adInfo.id,
         family: adInfo.family,
         email: adInfo.email,
         username: adInfo.username,
@@ -66,9 +66,13 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     if (result) {
       res.status(200).json({
         admin: {
+          id: result.id,
           name: result.name,
           family: result.family,
+          username: result.username,
           email: result.email,
+          address: result.address,
+          phoneNumber: result.phoneNumber,
           token,
         },
       });
@@ -124,14 +128,14 @@ export const adminLogin = async (
             token: token,
           },
           select: {
+            id: true,
             name: true,
             family: true,
             email: true,
+            username: true,
             address: true,
             phoneNumber: true,
-            username: true,
             token: true,
-            id: true,
           },
         });
         console.log(update);
