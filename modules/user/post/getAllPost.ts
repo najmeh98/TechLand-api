@@ -18,7 +18,9 @@ export const GetAllPost = async (req: Request, res: Response) => {
 
     if (posts) {
       const data: any = {
-        fullName: posts.name,
+        name: posts.name,
+        family: posts.family,
+        username: posts.username,
         email: posts.email,
         bio: posts.bio,
         id: posts.id,

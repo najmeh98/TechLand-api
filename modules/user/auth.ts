@@ -15,20 +15,20 @@ export const Login = async (req: Request, res: Response) => {
       return res.status(400).json("data problem");
     }
 
-    const User = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         email: email,
       },
     });
 
-    if (User) {
-      const userId: any = User.id;
+    if (user) {
+      const userId: any = user.id;
 
       //build token
       const token: string = generateAcessToken(userId);
 
       //compare pass
-      const compare = await bcrypt.compare(password, User.password);
+      const compare = await bcrypt.compare(password, user.password);
 
       if (compare) {
         const update = await prisma.user.update({
@@ -41,18 +41,22 @@ export const Login = async (req: Request, res: Response) => {
         if (update) {
           res.status(200).json({
             user: {
-              id: User.id,
-              email: User.email,
-              fullName: User.name,
+              id: user.id,
+              name: user.name,
+              family: user.family,
+              email: user.email,
+              username: user.username,
+              address: user.address,
+              phoneNumber: user.phoneNumber,
               token,
             },
           });
         }
       } else {
-        res.status(401).json("password is invalid");
+        res.status(404).json("password is invalid");
       }
     } else {
-      res.status(404).json("There is no user with this profile");
+      res.status(401).json("There is no user with this profile");
     }
   } catch (error) {
     res.status(500).json(error);
@@ -67,14 +71,15 @@ export const Authentication = async (req: Request, res: Response) => {
 
     const email: string = req.body.email;
     const password: any = userInfo.password;
+    const username: string = userInfo.username;
 
     // const name: string = req.body.name;
 
     if (checkdata == false) {
-      return res.status(400).json("error");
+      return res.status(402).json("error");
     }
     const User = await prisma.user.findFirst({
-      where: { email: email },
+      where: { email: email, username: username },
     });
 
     if (User) {
@@ -90,7 +95,7 @@ export const Authentication = async (req: Request, res: Response) => {
           password: hash,
           address: userInfo.address,
           phoneNumber: userInfo.phone,
-          token: "",
+          token: "0",
         },
       });
 
@@ -103,9 +108,12 @@ export const Authentication = async (req: Request, res: Response) => {
           .header("token", token)
           .json({
             user: {
+              name: newUser.name,
+              family: newUser.family,
+              address: newUser.address,
               email: newUser.email,
+              phoneNmuber: newUser.phoneNmuber,
               id: newUser.id,
-              fullName: newUser.name,
               token,
             },
           });

@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
 
-export const GetallInfo = async (req: Request, res: Response) => {
+export const GetallInfo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     //@ts-ignore
-    const adId = req.userId;
-    console.log(req);
+    const adId: number = req.userId;
 
     //admin info
     const adInfo = await prisma.admin.findFirst({
@@ -13,25 +15,31 @@ export const GetallInfo = async (req: Request, res: Response) => {
         id: adId,
       },
       select: {
+        id: true,
         name: true,
-        address: true,
         family: true,
-        bio: true,
-        email: true,
-        job: true,
-        phoneNumber: true,
         username: true,
+        email: true,
+        address: true,
+        phoneNumber: true,
+        bio: true,
+        job: true,
+        token: true,
       },
     });
 
     const alluser = await prisma.user.findMany({
       select: {
         name: true,
-        address: true,
         family: true,
+        username: true,
         email: true,
+        address: true,
         phoneNumber: true,
+        bio: true,
+        skill: true,
         createdAt: true,
+        // token: true,
       },
     });
 

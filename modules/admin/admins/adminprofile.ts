@@ -2,10 +2,15 @@ import { Request, Response } from "express";
 import { dataValidation } from "../../../utilis/checkdata";
 import { prisma } from "../../../utilis/prisma";
 
-export const adminprofile = async (req: Request, res: Response) => {
+export const adminprofile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const id: any = req.params.id;
     const dt: any = req.body.admin;
+    console.log(req.body);
+    console.log(req.files);
 
     if (!id) return;
     // check data
@@ -22,15 +27,16 @@ export const adminprofile = async (req: Request, res: Response) => {
         id: Number(id),
       },
       data: {
+        id: dt.id,
         name: dt.name,
         family: dt.family,
+        username: dt.username,
         email: dt.email,
+        address: dt.address,
         phoneNumber: dt.phoneNumber,
         bio: dt.bio,
         job: dt.job,
         updatedAt: new Date().toISOString(),
-        address: dt.address,
-        username: dt.username,
 
         // image:
       },
