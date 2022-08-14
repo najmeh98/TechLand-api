@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
 
-export const DeleteUser = async (req: Request, res: Response) => {
+export const DeleteUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const id: any = req.params.id;
     console.log("params", req.params.id);
