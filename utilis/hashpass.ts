@@ -1,6 +1,6 @@
 import { createHmac } from "crypto";
 
-export const hasspassword = (password: string): string => {
+export const passwordHash = (password: string): string => {
   const passalogritm: any = process.env.PASS_ALGORITHM;
   const secret: any = process.env.PASS_SECRET;
   const jwtToken: any = process.env.JWT_TOKEN;
