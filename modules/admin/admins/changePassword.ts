@@ -28,16 +28,14 @@ export const changePassword = async (
       console.log(findUser);
 
       const pass: string = findUser?.password;
-      console.log(" db pass", pass);
+
       // hash pass
       const hashCurrentPass: string = hashpassmethod(passsword);
-      console.log("hash pass", hashCurrentPass);
 
-      console.log(hashCurrentPass === pass);
+      // console.log(hashCurrentPass === pass);
 
       // hash new pass
       const hashNewPass: string = hashpassmethod(newpass);
-      console.log("hash new pass", hashNewPass);
 
       const id: any = findUser?.id;
 
@@ -51,7 +49,6 @@ export const changePassword = async (
           },
         });
         if (updatepass) {
-          console.log(updatepass);
           res.status(200).json("update password");
         } else {
           res.status(400).json("error");
