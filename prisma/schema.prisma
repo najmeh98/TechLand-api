@@ -8,60 +8,60 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String?  @db.VarChar(225)
-  family    String     
-  username String 
-  email     String   @unique(map: "User_email_key") @db.VarChar(255)
-  password  String   @db.VarChar(225)
-  phoneNumber String   @unique
-  address String
-  skill String?
-  bio String?
-  createdAt DateTime @default(now())
-  post      Post[]
-  isAdmin  Boolean  @default(false)
-  updatedAt DateTime   @default(now())
-  token     String    @unique
+  id            Int       @id @default(autoincrement())
+  name          String?  @db.VarChar(225)
+  family        String     
+  username      String 
+  email         String   @unique(map: "User_email_key") @db.VarChar(255)
+  password      String   @db.VarChar(225)
+  phoneNumber   String   @unique
+  address       String
+  skill         String?
+  bio           String?
+  createdAt     DateTime @default(now())
+  post          Post[]
+  isAdmin       Boolean  @default(false)
+  updatedAt     DateTime   @default(now())
+  token         String    @unique
 }
 
 model Admin {
- id Int   @id @default(autoincrement())
- name  String 
- family String
- email String   @unique
- password String 
- username String
- address String
- phoneNumber  String @unique
- createdAt DateTime @default(now())
- updatedAt DateTime   @default(now())
- token       String   @unique
- bio        String? 
- job     String?
- post   Post[]
+ id              Int   @id @default(autoincrement())
+ name            String 
+ family          String
+ email           String   @unique
+ password        String 
+ username        String
+ address         String
+ phoneNumber     String @unique
+ createdAt       DateTime @default(now())
+ updatedAt       DateTime   @default(now())
+ token           String   @unique
+ bio             String? 
+ job             String?
+ post            Post[]
 }
 
 
 model Post {
-  id Int    @id @default(autoincrement())
-  title  String  @db.VarChar(255)
-  content String?  @db.VarChar(255)
-  image  String?
-  author  User @relation(fields: [authorId] , references: [id])
-  authorId Int
-  published  Boolean @default(false)
-  createdAt DateTime  @default(now())
-  categoryId Int
-  updatedAt DateTime  @default(now())
-  category   Category   @relation(fields:[categoryId],   references: [id])
-  admin    Admin  @relation(fields: [adminId] , references: [id])
-  adminId   Int
+  id             Int    @id @default(autoincrement())
+  title          String  @db.VarChar(255)
+  content        String?  @db.VarChar(255)
+  image          String?
+  author         User @relation(fields: [authorId] , references: [id])
+  authorId       Int
+  published      Boolean @default(false)
+  createdAt      DateTime  @default(now())
+  categoryId     Int
+  updatedAt      DateTime  @default(now())
+  category       Category   @relation(fields:[categoryId],   references: [id])
+  admin          Admin  @relation(fields: [adminId] , references: [id])
+  adminId        Int
 }
 
 model Category {
-  id Int   @id @default(autoincrement())
-  name String
-  posts  Post[] 
+  id            Int   @id @default(autoincrement())
+  name          String
+  posts         Post[] 
 }
 
