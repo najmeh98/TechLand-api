@@ -24,7 +24,7 @@ import { adminprofile } from "./modules/admin/admins/adminprofile";
 import { PostCreate } from "./modules/user/post/postcreate";
 import { GetallInfo } from "./modules/admin/admins/getAllInfo";
 import { adminCreate } from "./modules/admin/admins/adminCreate";
-import { postsCount } from "./modules/admin/posts/postsCount";
+import { postsCount } from "./modules/admin/count/postsCount";
 import { usersCount } from "./modules/admin/users/usersCount";
 import { changePassword } from "./modules/admin/admins/changePassword";
 import { userPassword } from "./modules/user/users/userPassword";
