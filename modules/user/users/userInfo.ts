@@ -60,6 +60,6 @@ export const userInfo = async (req: Request, res: Response) => {
       res.status(404).json("کاربر با این مشخصات وجود ندارد.");
     }
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json(error);
   }
 };

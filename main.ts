@@ -34,8 +34,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// app.use(fileUpload());
-
 // ********* Routes ***********
 
 const port = 3001;
@@ -94,8 +92,6 @@ app.post("/api/data/allInfo", auth, GetallInfo);
 app.post("/api/data/admin/adminCreate", auth, adminCreate);
 //count of posts & users
 app.post("/api/data/count", auth, postsCount);
-//count of Users
-// app.post("/api/data/admin/count", usersCount);
 //change password
 app.post("/api/admin/changePassword", auth, changePassword);
 
