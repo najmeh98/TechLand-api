@@ -39,6 +39,7 @@ model Admin {
  token       String   @unique
  bio        String? 
  job     String?
+ post   Post[]
 }
 
 
@@ -46,15 +47,16 @@ model Post {
   id Int    @id @default(autoincrement())
   title  String  @db.VarChar(255)
   content String?  @db.VarChar(255)
-  image  String
+  image  String?
   author  User @relation(fields: [authorId] , references: [id])
   authorId Int
   published  Boolean @default(false)
   createdAt DateTime  @default(now())
   categoryId Int
-  updatedAt DateTime  @updatedAt
+  updatedAt DateTime  @default(now())
   category   Category   @relation(fields:[categoryId],   references: [id])
-
+  admin    Admin  @relation(fields: [adminId] , references: [id])
+  adminId   Int
 }
 
 model Category {
