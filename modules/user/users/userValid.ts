@@ -1,28 +1,38 @@
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
 import jwt from "jsonwebtoken";
-export const userValid = async (req: Request, res: Response) => {
-  try {
-    //@ts-ignore
-    console.log(req.userId);
-    const jwttoken: any = process.env.JWT_TOKEN;
+import { generateAcessToken } from "../../../utilis/authenticate";
 
+export const userValid = async (req: Request, res: Response): Promise<void> => {
+  console.log("uservalid", req.body);
+
+  const id = req.body?.id;
+
+  //@ts-ignore
+  const userId: number = req.userId;
+
+  console.log("type", typeof userId); // string
+  try {
     const userInfo = await prisma.user.findFirst({
       where: {
-        //@ts-ignore
-        id: req.userId,
+        // error: id is strign  , solve: Number(id) --> conver id string to id int
+        id: Number(userId),
       },
       include: {
         post: true,
       },
     });
+    console.log("userinfo", req.params);
+
+    console.dir(userInfo);
     if (userInfo) {
       const userId: any = userInfo.id;
-      const token = jwt.sign(userId, jwttoken);
-
+      const token: string = generateAcessToken(userId);
       const user = {
         id: userInfo?.id,
-        fullName: userInfo?.name,
+        name: userInfo?.name,
+        family: userId?.family,
+        username: userInfo?.username,
         email: userInfo?.email,
         bio: userInfo?.bio,
         skill: userInfo?.skill,
@@ -31,13 +41,16 @@ export const userValid = async (req: Request, res: Response) => {
         token: token,
       };
 
-      const post = userInfo?.post;
+      console.log("user", user);
 
+      const post = userInfo?.post;
       res.status(200).json({ user, post });
     } else {
-      res.status(400).json("data problem");
+      res.status(401).json("user not found");
     }
   } catch (error) {
-    res.status(500).json({ Error });
+    console.log("error valid", error);
+    console.dir(error);
+    res.status(500).json(error);
   }
 };

@@ -11,7 +11,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
 
     console.log("tokenUserId", tokenUserId);
     //@ts-ignore
-    req.userId = tokenUserId;
+    req.userId = tokenUserId; //string
 
     return next();
   } catch (error) {
@@ -27,7 +27,6 @@ export const generateAcessToken = (userId: any): string => {
 export const hashpassmethod = (password: string): string => {
   const passalogritm: any = process.env.PASS_ALGORITHM;
   const secret: any = process.env.PASS_SECRET;
-  const jwtToken: any = process.env.JWT_TOKEN;
 
   const pass: string = createHmac(passalogritm, secret)
     .update(password)

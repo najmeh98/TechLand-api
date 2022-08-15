@@ -38,14 +38,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    const passalogritm: any = process.env.PASS_ALGORITHM;
-    const secret: any = process.env.PASS_SECRET;
-    const jwtToken: any = process.env.JWT_TOKEN;
-
     //hash password
-    const pass: string = createHmac(passalogritm, secret)
-      .update(adInfo.password)
-      .digest("hex");
+    const pass: string = hashpassmethod(adInfo.password);
 
     const result = await prisma.admin.create({
       data: {
@@ -62,7 +56,10 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     });
 
     const adminId: any = result.id;
-    const token = jwt.sign(adminId, jwtToken);
+
+    //token
+    const token = generateAcessToken(adminId);
+
     if (result) {
       res.status(200).json({
         admin: {
@@ -108,7 +105,7 @@ export const adminLogin = async (
 
     console.log(user);
     const userId: any = user?.id;
-    const hashpassword: string | undefined = hashpassmethod(password);
+    const hashpassword: string = hashpassmethod(password);
 
     const pass: string | undefined = user?.password;
 
