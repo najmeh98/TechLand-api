@@ -9,7 +9,7 @@ export const GetallInfo = async (
     //@ts-ignore
     const adId: number = req.userId;
 
-    //admin info
+    //get all admin info
     const adInfo = await prisma.admin.findFirst({
       where: {
         id: adId,
@@ -28,6 +28,7 @@ export const GetallInfo = async (
       },
     });
 
+    // get all user info
     const alluser = await prisma.user.findMany({
       select: {
         name: true,
@@ -45,7 +46,6 @@ export const GetallInfo = async (
 
     const lengthofUsers: number = alluser.length;
 
-    console.log("adInfo", adInfo);
     if (adInfo && alluser) {
       res.status(200).json({ adInfo, alluser, lengthofUsers });
     } else {
