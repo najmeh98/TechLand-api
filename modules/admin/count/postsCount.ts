@@ -17,7 +17,7 @@ export const postsCount = async (
     if (postCount && userCount) {
       res.status(200).json({ postCount, userCount });
     } else {
-      res.status(400).json("error");
+      res.status(400).json("There are no posts or user");
     }
   } catch (error) {
     res.status(500).json(error);
