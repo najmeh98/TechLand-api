@@ -7,11 +7,13 @@ export const userPassword = async (req: Request, res: Response) => {
 
   const newpass: string = req.body?.passwordInfo?.newPassword;
 
+  //@ts-ignore
+  const userId = req.userId;
+
   try {
     const user = await prisma.user.findFirst({
       where: {
-        //@ts-ignore
-        id: userId,
+        id: Number(userId),
       },
     });
 

@@ -5,14 +5,13 @@ export const GetallInfo = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  //@ts-ignore
+  const adId: number = req.userId;
   try {
-    //@ts-ignore
-    const adId: number = req.userId;
-
     //get all admin info
     const adInfo = await prisma.admin.findFirst({
       where: {
-        id: adId,
+        id: Number(adId),
       },
       select: {
         id: true,
@@ -52,6 +51,7 @@ export const GetallInfo = async (
       res.status(400).json("error");
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   }
 };

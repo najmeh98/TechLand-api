@@ -4,12 +4,15 @@ import { Request, Response } from "express";
 export const GetAllPost = async (req: Request, res: Response) => {
   const id: number = req.body.id;
 
+  //@ts-ignore
+  const userId = req.userId;
+
   try {
     const posts = await prisma.user.findFirst({
       where: {
-        id: Number(id),
-        // //@ts-ignore
-        // id: req.userId,
+        // id: Number(id),
+        //@ts-ignore
+        id: Number(userId),
       },
       include: {
         post: true,

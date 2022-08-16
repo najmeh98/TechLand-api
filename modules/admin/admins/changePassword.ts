@@ -14,14 +14,16 @@ export const changePassword = async (
 
   const id: any = req.query.query;
 
+  //@ts-ignore
+  const usreId = req.userId;
+
   if (!passsword || !newpass || passsword.length == null) {
     res.status(401).json("data problem");
   }
   try {
     const findUser = await prisma.admin.findFirst({
       where: {
-        //@ts-ignore
-        id: req.userId,
+        id: Number(usreId),
       },
     });
     if (findUser) {
