@@ -26,8 +26,8 @@ export const GetAllusers = async (
     } else {
       res.status(400).json(Error);
     }
-    console.log("hi");
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   }
 };

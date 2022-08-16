@@ -13,7 +13,7 @@ import { DeletePost } from "./modules/user/post/deletePost";
 import { prisma } from "./utilis/prisma";
 import { EditPost } from "./modules/user/post/editPost";
 import crypto from "crypto";
-import { userInfo } from "./modules/user/users/userInfo";
+import { userProfile } from "./modules/user/users/userprofile";
 import { getPost } from "./modules/user/post/getPost";
 import { userValid } from "./modules/user/users/userValid";
 import { adminLogin, register } from "./modules/admin/adminauth";
@@ -66,7 +66,7 @@ app.post("/api/data/editPost/:id", auth, EditPost);
 //get Post
 app.post("/api/data/getAllpost/:id", auth, GetAllPost);
 //get user
-app.post("/api/data/getUser/:id/:slug", auth, userInfo);
+app.post("/api/data/getUser/:id/:slug", auth, userProfile);
 //get post
 app.get("/api/data/getPost/:id", auth, getPost);
 // user valid
@@ -79,7 +79,7 @@ app.post("/api/admin/auth", register);
 //Login
 app.post("/api/admin/login", adminLogin);
 // count of users
-app.get("/api/data/admin/getAllusers", auth, GetAllusers);
+app.post("/api/data/admin/getAllusers", auth, GetAllusers);
 //delete user
 app.delete("/api/data/admin/deleteUser/:id", auth, DeleteUser);
 // edit user info
