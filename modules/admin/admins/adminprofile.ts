@@ -27,7 +27,7 @@ export const adminprofile = async (
         id: Number(id),
       },
       data: {
-        id: dt.id,
+        // id: dt.id,
         name: dt.name,
         family: dt.family,
         username: dt.username,
