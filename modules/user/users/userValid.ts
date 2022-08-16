@@ -31,13 +31,14 @@ export const userValid = async (req: Request, res: Response): Promise<void> => {
       const user = {
         id: userInfo?.id,
         name: userInfo?.name,
-        family: userId?.family,
+        family: userInfo?.family,
         username: userInfo?.username,
         email: userInfo?.email,
         bio: userInfo?.bio,
         skill: userInfo?.skill,
         isAdmin: userInfo?.isAdmin,
         createdAt: userInfo?.createdAt,
+        address: userInfo?.address,
         token: token,
       };
 
