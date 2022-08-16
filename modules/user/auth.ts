@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { dataValidation } from "../../utilis/checkdata";
 import { generateAcessToken } from "../../utilis/authenticate";
 
+//user login
 export const Login = async (req: Request, res: Response) => {
   try {
     const email: string = req.body.email;
@@ -63,6 +64,7 @@ export const Login = async (req: Request, res: Response) => {
   }
 };
 
+// user register
 export const Authentication = async (req: Request, res: Response) => {
   try {
     const userInfo: any = req.body.userInfo;
@@ -99,8 +101,7 @@ export const Authentication = async (req: Request, res: Response) => {
         },
       });
 
-      const jwtToken: any = process.env.JWT_TOKEN;
-      const token = jwt.sign(newUser.id, jwtToken);
+      const token = generateAcessToken(newUser.id);
 
       if (newUser) {
         return res
@@ -112,6 +113,7 @@ export const Authentication = async (req: Request, res: Response) => {
               family: newUser.family,
               address: newUser.address,
               email: newUser.email,
+              username: newUser.username,
               phoneNmuber: newUser.phoneNmuber,
               id: newUser.id,
               token,

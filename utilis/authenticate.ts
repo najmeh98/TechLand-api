@@ -11,7 +11,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
 
     console.log("tokenUserId", tokenUserId);
     //@ts-ignore
-    req.userId = tokenUserId; //string
+    req.userId = tokenUserId; //type : string
 
     return next();
   } catch (error) {
@@ -19,11 +19,13 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+// token
 export const generateAcessToken = (userId: any): string => {
   const token: any = process.env.JWT_TOKEN;
   return jwt.sign(userId, token);
 };
 
+// hash password
 export const hashpassmethod = (password: string): string => {
   const passalogritm: any = process.env.PASS_ALGORITHM;
   const secret: any = process.env.PASS_SECRET;

@@ -49,7 +49,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         email: adInfo.email,
         username: adInfo.username,
         password: pass,
-        phoneNumber: adInfo.phone,
+        phoneNumber: adInfo.phoneNumber,
         address: adInfo.address,
         token: "0",
       },
@@ -77,6 +77,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       res.status(401).json("error creating admin");
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   }
 };
