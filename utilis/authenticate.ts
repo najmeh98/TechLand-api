@@ -7,13 +7,14 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
   const jwttoken: any = process.env.JWT_TOKEN;
 
   try {
-    const tokenUserId = jwt.verify(token, jwttoken);
-
-    console.log("tokenUserId", tokenUserId);
-    //@ts-ignore
-    req.userId = tokenUserId; //type : string
-
-    return next();
+    if (token) {
+      const tokenUserId = jwt.verify(token, jwttoken);
+      //@ts-ignore
+      req.userId = tokenUserId; //type : string
+      return next();
+    } else {
+      res.status(401).json("invalid token ");
+    }
   } catch (error) {
     res.status(500).json(error);
   }
