@@ -43,8 +43,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     const result = await prisma.admin.create({
       data: {
+        id: undefined,
         name: adInfo.name,
-        // id: adInfo.id,
         family: adInfo.family,
         email: adInfo.email,
         username: adInfo.username,
@@ -52,6 +52,22 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         phoneNumber: adInfo.phoneNumber,
         address: adInfo.address,
         token: "0",
+        bio: "",
+        job: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      select: {
+        id: true,
+        name: true,
+        family: true,
+        username: true,
+        email: true,
+        address: true,
+        phoneNumber: true,
+        token: true,
+        createdAt: true,
       },
     });
 
@@ -90,9 +106,6 @@ export const adminLogin = async (
     const email: string = req.body.email;
     const password: string = req.body.password;
 
-    console.log(email);
-    console.log(password);
-
     if (!email || !password) {
       res.status(400).json("data problem");
     }
@@ -104,7 +117,6 @@ export const adminLogin = async (
       },
     });
 
-    console.log(user);
     const userId: any = user?.id;
     const hashpassword: string = hashpassmethod(password);
 
@@ -114,9 +126,6 @@ export const adminLogin = async (
 
     if (user) {
       const token: string = generateAcessToken(userId);
-      console.log(token);
-      //   //compare password
-      //   // const compare = await bcrypt.compare(password, user.password);
 
       if (pass === hashpassword) {
         const update = await prisma.admin.update({
@@ -136,7 +145,7 @@ export const adminLogin = async (
             token: true,
           },
         });
-        console.log(update);
+
         if (update) {
           res.status(200).json(update);
         } else {
