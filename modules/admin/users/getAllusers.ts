@@ -21,7 +21,6 @@ export const GetAllusers = async (
       },
     });
     if (result) {
-      console.log("result", result);
       res.status(200).json(result);
     } else {
       res.status(400).json(Error);

@@ -39,7 +39,6 @@ export const GetallInfo = async (
         bio: true,
         skill: true,
         createdAt: true,
-        // token: true,
       },
     });
 

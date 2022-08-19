@@ -10,10 +10,7 @@ export const postsCount = async (
     const postCount = await prisma.post.count();
 
     // count of users
-    const userCount = await prisma.user.count({});
-
-    console.log("result", postCount);
-    console.log("usercount", userCount);
+    const userCount = await prisma.user.count();
 
     if (postCount || userCount) {
       res.status(200).json({ postCount, userCount });
