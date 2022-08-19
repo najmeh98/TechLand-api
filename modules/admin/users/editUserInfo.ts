@@ -24,31 +24,33 @@ export const EditUserInfo = async (
         id: Number(id),
       },
       data: {
+        id: undefined,
         name: data.name,
         family: data.family,
         email: data.email,
+        username: data.username,
         phoneNumber: data.phoneNumber,
         address: data.address,
         bio: data.bio,
+        isAdmin: false,
         skill: data.skill,
-        username: data.username,
         updatedAt: new Date().toISOString(),
       },
+      select: {
+        name: true,
+        family: true,
+        username: true,
+        email: true,
+        address: true,
+        skill: true,
+        bio: true,
+        phoneNumber: true,
+        updatedAt: true,
+      },
     });
-    const userupdate = {
-      name: result?.name,
-      family: result?.family,
-      username: result?.username,
-      email: result?.email,
-      address: result?.address,
-      skill: result?.skill,
-      bio: result?.bio,
-      phoneNmuber: result?.phoneNumber,
-      updateAt: result?.updatedAt,
-    };
 
     if (result) {
-      res.status(200).json(userupdate);
+      res.status(200).json(result);
     } else {
       res.status(400).json("error");
     }

@@ -38,20 +38,19 @@ export const Login = async (req: Request, res: Response) => {
             updatedAt: new Date().toISOString(),
             token: token,
           },
+          select: {
+            id: true,
+            name: true,
+            family: true,
+            email: true,
+            username: true,
+            address: true,
+            phoneNumber: true,
+            token: true,
+          },
         });
         if (update) {
-          res.status(200).json({
-            user: {
-              id: user.id,
-              name: user.name,
-              family: user.family,
-              email: user.email,
-              username: user.username,
-              address: user.address,
-              phoneNumber: user.phoneNumber,
-              token,
-            },
-          });
+          res.status(200).json(update);
         }
       } else {
         res.status(404).json("password is invalid");
@@ -90,35 +89,37 @@ export const Authentication = async (req: Request, res: Response) => {
     bcrypt.hash(password, 10, async (err, hash) => {
       const newUser: any = await prisma.user.create({
         data: {
+          id: undefined,
           name: userInfo.name,
           family: userInfo.family,
           username: userInfo.username,
           email: userInfo.email,
-          password: hash,
           address: userInfo.address,
+          password: hash,
           phoneNumber: userInfo.phone,
+          isAdmin: false,
+          bio: "",
+          skill: "",
           token: "0",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        select: {
+          name: true,
+          family: true,
+          address: true,
+          email: true,
+          username: true,
+          phoneNumber: true,
+          id: true,
+          token: true,
         },
       });
 
       const token = generateAcessToken(newUser.id);
 
       if (newUser) {
-        return res
-          .status(200)
-          .header("token", token)
-          .json({
-            user: {
-              name: newUser.name,
-              family: newUser.family,
-              address: newUser.address,
-              email: newUser.email,
-              username: newUser.username,
-              phoneNmuber: newUser.phoneNmuber,
-              id: newUser.id,
-              token,
-            },
-          });
+        return res.status(200).header("token", token).json(newUser);
       } else {
         res.status(401).json("Error creating user");
       }
