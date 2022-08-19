@@ -9,8 +9,6 @@ export const adminprofile = async (
   try {
     const id: any = req.params.id;
     const dt: any = req.body.admin;
-    console.log(req.body);
-    console.log(req.files);
 
     if (!id) return;
     // check data
@@ -27,17 +25,16 @@ export const adminprofile = async (
         id: Number(id),
       },
       data: {
-        // id: dt.id,
+        id: undefined,
         name: dt.name,
         family: dt.family,
-        username: dt.username,
         email: dt.email,
+        username: dt.username,
         address: dt.address,
         phoneNumber: dt.phoneNumber,
         bio: dt.bio,
         job: dt.job,
         updatedAt: new Date().toISOString(),
-
         // image:
       },
     });
