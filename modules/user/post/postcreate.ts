@@ -50,31 +50,25 @@ export const PostCreate = async (
   const bucket: string = uploaderConfig.createImage.bucket;
   const format: string = uploaderConfig.createImage.format;
 
-  // if (bucket) {
-  //   console.log(bucket);
-  // }
-
   const title: string = req.body.title;
-  const content: string = req.body.content;
-  const files: any = req.files;
 
-  console.log(files);
-  console.log(title, content);
+  const content: string = req.body.content;
 
   const imgUrl: string = await uploadService(req, bucket, format);
-  // if (imgUrl) {
-  //   console.log(imgUrl);
-  // }
+
   try {
     const newPost: any = await prisma.post.create({
       data: {
+        id: undefined,
         title: title,
         content: content,
-        // image: `${imgUrl}`,
-        image: "",
+        image: `${imgUrl}`,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        published: false,
         author: {
           //@ts-ignore
-          connect: { id: req.userId },
+          connect: { id: Number(req.userId) },
         },
         category: {
           create: { name: "" },
