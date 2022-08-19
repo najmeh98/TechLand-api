@@ -19,48 +19,40 @@ export const EditPost = async (req: Request, res: Response) => {
     const bucket: string = uploaderConfig.createImage.bucket;
     const format: string = uploaderConfig.createImage.format;
 
-    // const imgUrl: string = await uploadService(req, bucket, format);
-    // if (imgUrl) {
-    //   console.log(imgUrl);
-    // }
-    // console.debug(await uploadService(req, bucket, format));
-
     const findpost = await prisma.post.findFirst({ where: { id: Number(id) } });
     let data: any;
-    if (findpost) {
-      console.log("body", title, content);
-      console.log(id);
-      console.log(files);
 
+    if (findpost) {
       const editpost = await prisma.post.update({
         where: { id: Number(id) },
         data: {
+          id: undefined,
           title: title,
           content: content,
+          updatedAt: new Date(),
+          published: false,
           image: "",
         },
+        select: {
+          id: true,
+          title: true,
+          content: true,
+          image: true,
+          updatedAt: true,
+          published: true,
+        },
       });
-      console.log(editpost);
-      if (editpost) {
-        data = {
-          title: editpost.title,
-          content: editpost.content,
-          image: editpost.image,
-          id: editpost.id,
-          authorId: editpost.authorId,
-          published: editpost.published,
-          updatedAt: editpost.updatedAt,
-        };
 
-        res.status(200).json({ data });
+      if (editpost) {
+        res.status(200).json(data);
       } else {
-        res.status(400).json({ Error });
+        res.status(400).json(Error);
       }
     } else {
       res.status(404).json("post does not exicted");
     }
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json(error);
   }
 };
 
