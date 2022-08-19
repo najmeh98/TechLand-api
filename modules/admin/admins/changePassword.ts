@@ -6,9 +6,6 @@ export const changePassword = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  console.log("query", req.query);
-  console.log("bdy", req.body);
-
   const passsword: string = req.body?.adminPassword?.currentpassword;
   const newpass: string = req.body?.adminPassword?.newpassword;
 
@@ -27,14 +24,10 @@ export const changePassword = async (
       },
     });
     if (findUser) {
-      console.log(findUser);
-
       const pass: string = findUser?.password;
 
       // hash pass
       const hashCurrentPass: string = hashpassmethod(passsword);
-
-      // console.log(hashCurrentPass === pass);
 
       // hash new pass
       const hashNewPass: string = hashpassmethod(newpass);
@@ -48,6 +41,7 @@ export const changePassword = async (
           },
           data: {
             password: hashNewPass,
+            updatedAt: new Date(),
           },
         });
         if (updatepass) {
