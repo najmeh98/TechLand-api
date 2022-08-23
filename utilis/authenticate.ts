@@ -8,7 +8,9 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     if (token) {
-      const tokenUserId = jwt.verify(token, jwttoken);
+      const tokenUserId = jwt.verify(token, jwttoken, {
+        algorithms: ["HS256"],
+      });
       //@ts-ignore
       req.userId = tokenUserId; //type : string
       return next();
@@ -22,8 +24,8 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
 
 // token
 export const generateAcessToken = (userId: any): string => {
-  const token: any = process.env.JWT_TOKEN;
-  return jwt.sign(userId, token);
+  const secretKey: any = process.env.JWT_TOKEN;
+  return jwt.sign(userId, secretKey, { algorithm: "HS256" });
 };
 
 // hash password
