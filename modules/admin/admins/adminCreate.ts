@@ -50,7 +50,7 @@ export const adminCreate = async (
     if (admin) {
       res.status(200).json(admin);
     } else {
-      res.status(400).json("error");
+      res.status(400).json("Error in creating a new admin");
     }
   } catch (error) {
     console.log(error);
