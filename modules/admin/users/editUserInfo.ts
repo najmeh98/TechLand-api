@@ -21,7 +21,7 @@ export const EditUserInfo = async (
 
     const result = await prisma.user.update({
       where: {
-        id: Number(id),
+        id: id,
       },
       data: {
         id: undefined,

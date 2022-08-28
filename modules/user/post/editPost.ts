@@ -19,12 +19,12 @@ export const EditPost = async (req: Request, res: Response) => {
     const bucket: string = uploaderConfig.createImage.bucket;
     const format: string = uploaderConfig.createImage.format;
 
-    const findpost = await prisma.post.findFirst({ where: { id: Number(id) } });
+    const findpost = await prisma.post.findFirst({ where: { id: id } });
     let data: any;
 
     if (findpost) {
       const editpost = await prisma.post.update({
-        where: { id: Number(id) },
+        where: { id: id },
         data: {
           id: undefined,
           title: title,

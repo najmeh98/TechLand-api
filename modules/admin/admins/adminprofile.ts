@@ -22,7 +22,7 @@ export const adminprofile = async (
 
     const updateInfo = await prisma.admin.update({
       where: {
-        id: Number(id),
+        id: id,
       },
       data: {
         id: undefined,

@@ -6,7 +6,7 @@ export const DeletePost = async (req: Request, res: Response) => {
     const id: any = req.params.id;
     console.log("deleteid", id);
     const deletepost = await prisma.post.delete({
-      where: { id: Number(id) },
+      where: { id: id },
     });
 
     if (deletepost) {

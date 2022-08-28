@@ -12,7 +12,7 @@ export const changePassword = async (
   const id: any = req.query.query;
 
   //@ts-ignore
-  const usreId = req.userId;
+  const usreId: string = req.userId;
 
   if (!passsword || !newpass || passsword.length == null) {
     res.status(401).json("data problem");
@@ -20,7 +20,7 @@ export const changePassword = async (
   try {
     const findUser = await prisma.admin.findFirst({
       where: {
-        id: Number(usreId),
+        id: usreId,
       },
     });
     if (findUser) {
@@ -37,7 +37,7 @@ export const changePassword = async (
       if (pass === hashCurrentPass) {
         const updatepass = await prisma.admin.update({
           where: {
-            id: Number(id),
+            id: id,
           },
           data: {
             password: hashNewPass,

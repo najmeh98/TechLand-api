@@ -13,7 +13,7 @@ export const userPassword = async (req: Request, res: Response) => {
   try {
     const user = await prisma.user.findFirst({
       where: {
-        id: Number(userId),
+        id: userId,
       },
     });
 
@@ -28,7 +28,7 @@ export const userPassword = async (req: Request, res: Response) => {
       if (oldpass === hashCurrentPass) {
         const updatePass = await prisma.user.update({
           where: {
-            id: Number(id),
+            id: id,
           },
           data: {
             password: hashNewPass,
