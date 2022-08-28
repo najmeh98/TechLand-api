@@ -8,7 +8,6 @@ export const adminCreate = async (
   res: Response
 ): Promise<void> => {
   const dt: any = req.body?.adminInfo;
-  const token: string = req.body.token;
 
   try {
     const value = dataValidation(dt);
