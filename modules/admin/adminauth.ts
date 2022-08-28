@@ -66,7 +66,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         email: true,
         address: true,
         phoneNumber: true,
-        token: true,
         createdAt: true,
       },
     });
@@ -77,18 +76,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const token = generateAcessToken(adminId);
 
     if (result) {
-      res.status(200).json({
-        admin: {
-          id: result.id,
-          name: result.name,
-          family: result.family,
-          username: result.username,
-          email: result.email,
-          address: result.address,
-          phoneNumber: result.phoneNumber,
-          token,
-        },
-      });
+      res.status(200).json({ result, token });
     } else {
       res.status(401).json("error creating admin");
     }
@@ -129,7 +117,7 @@ export const adminLogin = async (
 
       if (pass === hashpassword) {
         const update = await prisma.admin.update({
-          where: { email: email },
+          where: { id: userId },
           data: {
             updatedAt: new Date(),
             token: token,

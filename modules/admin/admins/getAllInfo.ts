@@ -6,13 +6,14 @@ export const GetallInfo = async (
   res: Response
 ): Promise<void> => {
   //@ts-ignore
-  const adId: number = req.userId;
+  const adId: string = req.userId;
   try {
     //get all admin info
     const adInfo = await prisma.admin.findFirst({
       where: {
-        id: Number(adId),
+        id: adId,
       },
+
       select: {
         id: true,
         name: true,
@@ -24,6 +25,15 @@ export const GetallInfo = async (
         bio: true,
         job: true,
         token: true,
+        post: {
+          select: {
+            title: true,
+            content: true,
+            image: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
       },
     });
 
