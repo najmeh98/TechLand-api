@@ -36,6 +36,7 @@ export const GetallInfo = async (
         },
       },
     });
+    console.log("info", adInfo);
 
     // get all user info
     const alluser = await prisma.user.findMany({
