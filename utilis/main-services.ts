@@ -16,7 +16,8 @@ const s3 = new AWS.S3({
 
 // bucket
 export const uploaderConfig: any = {
-  createImage: { bucket: "imagecategory", format: "jpg" },
+  createImage: { bucket: "postimage", format: "jpg" },
+  createCategory: { bucket: "categoriesimage", format: ".jpg" },
 };
 
 export const uploadService = async (
@@ -36,7 +37,7 @@ export const uploadService = async (
   if (!req.files) {
     return "no image access";
   } else {
-    const body: string = req.files.file.data;
+    const body: string = req.files.image.data;
     // encrypt base on base64
     let base64data = Buffer.from(body, "binary");
     const uploadParams = await s3
