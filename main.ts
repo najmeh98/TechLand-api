@@ -2,32 +2,33 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { Authentication, Login } from "./modules/user/auth";
-// import fileUpload from "express-fileupload";
-import multer from "multer";
 import { auth, generateAcessToken } from "./utilis/authenticate";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { GetAllPost } from "./modules/user/post/getAllPost";
+import { GetAllPost } from "./modules/admin/posts/getAllPost";
 import fileUpload from "express-fileupload";
-import { DeletePost } from "./modules/user/post/deletePost";
+import { DeletePost } from "./modules/admin/posts/deletePost";
 import { prisma } from "./utilis/prisma";
-import { EditPost } from "./modules/user/post/editPost";
-import crypto from "crypto";
+import { EditPost } from "./modules/admin/posts/editPost";
 import { userProfile } from "./modules/user/users/userprofile";
-import { getPost } from "./modules/user/post/getPost";
+// import { getPost } from "./modules/user/post/getPost";
 import { userValid } from "./modules/user/users/userValid";
 import { adminLogin, register } from "./modules/admin/adminauth";
 import { GetAllusers } from "./modules/admin/users/getAllusers";
 import { DeleteUser } from "./modules/admin/users/deleteUser";
 import { EditUserInfo } from "./modules/admin/users/editUserInfo";
 import { adminprofile } from "./modules/admin/admins/adminprofile";
-import { PostCreate } from "./modules/user/post/postcreate";
 import { GetallInfo } from "./modules/admin/admins/getAllInfo";
 import { adminCreate } from "./modules/admin/admins/adminCreate";
 import { postsCount } from "./modules/admin/count/postsCount";
-import { usersCount } from "./modules/admin/users/usersCount";
 import { changePassword } from "./modules/admin/admins/changePassword";
 import { userPassword } from "./modules/user/users/userPassword";
+import { postCreate } from "./modules/admin/posts/postCreate";
+import { createCategory } from "./modules/admin/category/createCategory";
+import { getCategories } from "./modules/admin/category/getCategories";
+import { categoryInfo } from "./modules/admin/category/categoryInfo";
+import { deleteCategory } from "./modules/admin/category/deleteCategory";
+import { editCategory } from "./modules/admin/category/editCategory";
 
 dotenv.config();
 const app = express();
@@ -54,21 +55,12 @@ app.get("/", (req, res) => {
 });
 
 // user
-app.delete("/api/data/deletePost/:id", auth, DeletePost);
 // Login
 app.post("/api/user/login", Login);
 // Authorization
 app.post("/api/user/auth", Authentication);
-// Create Post
-app.post("/api/data/add-post", auth, PostCreate);
-//Edit Post
-app.post("/api/data/editPost/:id", auth, EditPost);
-//get Post
-app.post("/api/data/getAllpost/:id", auth, GetAllPost);
 //get user
 app.post("/api/data/getUser/:id/:slug", auth, userProfile);
-//get post
-app.get("/api/data/getPost/:id", auth, getPost);
 // user valid
 app.post("/api/data/userValid", auth, userValid);
 // change password
@@ -78,12 +70,22 @@ app.post("/api/data/user/cahngePassword", auth, userPassword);
 app.post("/api/admin/auth", register);
 //Login
 app.post("/api/admin/login", adminLogin);
+//post create
+app.post("/api/data/admin/postCreate", auth, postCreate);
+//Edit Post
+app.post("/api/data/editPost/:id", auth, EditPost);
+//delete post
+app.delete("/api/data/deletePost/:id", auth, DeletePost);
+//get Post
+app.post("/api/data/getAllpost/:id", auth, GetAllPost);
+//get single post
+// app.get("/api/data/getPost/:id", auth, getPost);
 // count of users
-app.post("/api/data/admin/getAllusers", auth, GetAllusers);
+app.post("/api/data/admin/getAllusers", auth, GetAllusers); // ?
 //delete user
-app.delete("/api/data/admin/deleteUser/:id", auth, DeleteUser);
+app.delete("/api/data/admin/deleteUser/:id", auth, DeleteUser); // ?
 // edit user info
-app.post("/api/data/admin/editUserInfo/:id", auth, EditUserInfo);
+app.post("/api/data/admin/editUserInfo/:id", auth, EditUserInfo); //?
 //profile of admin
 app.post("/api/admin/profile/:id", auth, adminprofile);
 //get all info
@@ -94,7 +96,23 @@ app.post("/api/data/admin/adminCreate", auth, adminCreate);
 app.post("/api/data/count", auth, postsCount);
 //change password
 app.post("/api/admin/changePassword", auth, changePassword);
+// create category
+app.post("/api/data/admin/setCategory", auth, createCategory);
+// get all categories
+app.get("/api/data/admin/getCategories", auth, getCategories);
+//get single category
+app.get("/api/data/admin/getCategory_Info", auth, categoryInfo);
+//delete category
+app.post("/api/data/admin/deleteCategory", auth, deleteCategory);
+//edit category
+app.post("/api/data/admin/editCategory", auth, editCategory);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+// Admin
+// **
+//Register , login , create post , edit post , delete post , create admin , getadminInfo , post count , change password ,
+
+//
