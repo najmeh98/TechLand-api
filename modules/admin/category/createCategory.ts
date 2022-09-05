@@ -17,34 +17,36 @@ export const createCategory = async (
     res.status(403).json("data problem");
   }
 
-  console.log("req", req);
-  console.log("body", req.body);
-  console.log("files", req.files);
-
   const bucket: string = uploaderConfig.createCategory.bucket;
   const format: string = uploaderConfig.createCategory.format;
 
   const imgUrl: string = await uploadService(req, bucket, format);
+
   try {
     const createCate = await prisma.category.create({
       data: {
+        id: undefined,
         name: name,
         description: description,
         image: `${imgUrl}`,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       select: {
         name: true,
         description: true,
         image: true,
         id: true,
+        createdAt: true,
         posts: {
           select: {
+            id: true,
             title: true,
             content: true,
             image: true,
             categoryId: true,
-            id: true,
             createdAt: true,
+            updatedAt: true,
           },
         },
       },
