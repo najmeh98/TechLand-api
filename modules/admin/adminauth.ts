@@ -58,25 +58,39 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         updatedAt: new Date(),
       },
 
-      select: {
-        id: true,
-        name: true,
-        family: true,
-        username: true,
-        email: true,
-        address: true,
-        phoneNumber: true,
-        createdAt: true,
-      },
+      // select: {
+      //   id: true,
+      //   name: true,
+      //   family: true,
+      //   username: true,
+      //   email: true,
+      //   address: true,
+      //   phoneNumber: true,
+      //   createdAt: true,
+      // },
     });
+
+    console.log(result);
 
     const adminId: any = result.id;
 
     //token
     const token = generateAcessToken(adminId);
 
+    const admin = {
+      id: result.id,
+      name: result.name,
+      family: result.family,
+      username: result.username,
+      email: result.email,
+      address: result.address,
+      phoneNumber: result.phoneNumber,
+      createdAt: result.createdAt,
+      token: token,
+    };
+
     if (result) {
-      res.status(200).json({ result, token });
+      res.status(200).json(admin);
     } else {
       res.status(401).json("error creating admin");
     }
