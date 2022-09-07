@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { Authentication, Login } from "./modules/user/auth";
-import { auth, generateAcessToken } from "./utilis/authenticate";
+import { auth } from "./utilis/authenticate";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { GetAllPost } from "./modules/admin/posts/getAllPost";
@@ -11,7 +11,6 @@ import { DeletePost } from "./modules/admin/posts/deletePost";
 import { prisma } from "./utilis/prisma";
 import { EditPost } from "./modules/admin/posts/editPost";
 import { userProfile } from "./modules/user/users/userprofile";
-// import { getPost } from "./modules/user/post/getPost";
 import { userValid } from "./modules/user/users/userValid";
 import { adminLogin, register } from "./modules/admin/adminauth";
 import { GetAllusers } from "./modules/admin/users/getAllusers";
@@ -29,6 +28,7 @@ import { getCategories } from "./modules/admin/category/getCategories";
 import { categoryInfo } from "./modules/admin/category/categoryInfo";
 import { deleteCategory } from "./modules/admin/category/deleteCategory";
 import { editCategory } from "./modules/admin/category/editCategory";
+import { singlePost } from "./modules/admin/posts/singlePost";
 
 dotenv.config();
 const app = express();
@@ -72,14 +72,9 @@ app.post("/api/admin/auth", register);
 app.post("/api/admin/login", adminLogin);
 //post create
 app.post("/api/data/admin/postCreate", auth, postCreate);
-//Edit Post
-app.post("/api/data/editPost/:id", auth, EditPost);
-//delete post
-app.delete("/api/data/deletePost/:id", auth, DeletePost);
+
 //get Post
 app.post("/api/data/getAllpost/:id", auth, GetAllPost);
-//get single post
-// app.get("/api/data/getPost/:id", auth, getPost);
 // count of users
 app.post("/api/data/admin/getAllusers", auth, GetAllusers); // ?
 //delete user
@@ -106,6 +101,12 @@ app.get("/api/data/admin/getCategory_Info", auth, categoryInfo);
 app.post("/api/data/admin/deleteCategory", auth, deleteCategory);
 //edit category
 app.post("/api/data/admin/editCategory", auth, editCategory);
+// get single post
+app.get("/api/data/getpost_Info", auth, singlePost);
+//delete post
+app.delete("/api/data/deletePost", auth, DeletePost);
+//Edit Post
+app.post("/api/data/editPost/:id", auth, EditPost);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
