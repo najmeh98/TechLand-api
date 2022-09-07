@@ -15,7 +15,6 @@ export const getCategories = async (req: Request, res: Response) => {
     });
 
     if (getCategory) {
-      console.log(getCategories);
       res.status(200).json(getCategory);
     } else {
       res.status(400).json(Error);
