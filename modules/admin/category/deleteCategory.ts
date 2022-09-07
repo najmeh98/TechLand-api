@@ -7,7 +7,7 @@ export const deleteCategory = async (req: Request, res: Response) => {
   console.log("catId", req.query);
 
   try {
-    const catId: any = req.body?.wbId;
+    const catId: any = req.query?.catId;
     const deleteCate = await prisma.category.delete({
       where: {
         id: catId,
