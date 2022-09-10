@@ -25,6 +25,8 @@ export const GetallInfo = async (
         bio: true,
         job: true,
         token: true,
+        image: true,
+        createdAt: true,
         post: {
           select: {
             title: true,

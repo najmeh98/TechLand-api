@@ -51,6 +51,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         password: pass,
         phoneNumber: adInfo.phoneNumber,
         address: adInfo.address,
+        image: "",
         token: "0",
         bio: "",
         job: "",
@@ -85,7 +86,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       email: result.email,
       address: result.address,
       phoneNumber: result.phoneNumber,
-      createdAt: result.createdAt,
+      image: result?.image,
+      createdAt: result?.createdAt,
       token: token,
     };
 
@@ -144,7 +146,10 @@ export const adminLogin = async (
             username: true,
             address: true,
             phoneNumber: true,
+            image: true,
             token: true,
+            createdAt: true,
+            updatedAt: true,
           },
         });
 
