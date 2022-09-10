@@ -55,6 +55,7 @@ app.get("/", (req, res) => {
 });
 
 // user
+
 // Login
 app.post("/api/user/login", Login);
 // Authorization
@@ -73,8 +74,6 @@ app.post("/api/admin/login", adminLogin);
 //post create
 app.post("/api/data/admin/postCreate", auth, postCreate);
 
-//get Post
-app.post("/api/data/getAllpost/:id", auth, GetAllPost);
 // count of users
 app.post("/api/data/admin/getAllusers", auth, GetAllusers); // ?
 //delete user
@@ -106,7 +105,9 @@ app.get("/api/data/getpost_Info", auth, singlePost);
 //delete post
 app.delete("/api/data/deletePost", auth, DeletePost);
 //Edit Post
-app.post("/api/data/editPost/:id", auth, EditPost);
+app.post("/api/data/editPost", auth, EditPost);
+//get Posts
+app.get("/api/data/getAllposts", auth, GetAllPost);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
