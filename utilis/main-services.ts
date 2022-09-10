@@ -18,6 +18,7 @@ const s3 = new AWS.S3({
 export const uploaderConfig: any = {
   createImage: { bucket: "postimage", format: "jpg" },
   createCategory: { bucket: "categoriesimage", format: ".jpg" },
+  createProfile: { bucket: "profileimage", format: ".jpg" },
 };
 
 export const uploadService = async (
