@@ -8,8 +8,12 @@ app.use(express.json());
 app.use(fileUpload()); // Don't forget this line!
 
 export const EditPost = async (req: Request, res: Response) => {
+  console.log("r", req);
+  console.log("rbody", req.body);
+  console.log("rquery", req.query);
+
   try {
-    const { id }: any = req.params;
+    const psId: any = req.query.postId;
 
     const title: string = req.body.title;
     const content: string = req.body.content;
@@ -23,11 +27,11 @@ export const EditPost = async (req: Request, res: Response) => {
 
     const imgUrl: string = await uploadService(req, bucket, format);
 
-    const findpost = await prisma.post.findFirst({ where: { id: id } });
+    const findpost = await prisma.post.findFirst({ where: { id: psId } });
 
     if (findpost) {
       const editpost = await prisma.post.update({
-        where: { id: id },
+        where: { id: psId },
         data: {
           id: undefined,
           title: title,
