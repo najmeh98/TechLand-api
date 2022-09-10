@@ -33,6 +33,7 @@ model Admin {
  username        String     @db.VarChar(255)
  address         String     @db.VarChar(255)
  phoneNumber     Decimal    @db.Decimal(15,0)
+ image           String?    @db.VarChar(255)    
  createdAt       DateTime   @default(now())
  updatedAt       DateTime   @default(now())
  token           String     @db.VarChar(255)
