@@ -6,8 +6,6 @@ import multer from "multer";
 import fs, { mkdir } from "fs";
 import { uploaderConfig, uploadService } from "../../../utilis/main-services";
 
-const app = express();
-
 const getDirImage = () => {
   const year = new Date().getFullYear();
   const month = new Date().getMonth() + 1;
@@ -67,7 +65,7 @@ export const postCreate = async (
         content: content,
         image: `${imgUrl}`,
         published: false,
-        //  categoryId: catId,
+        // categoryId: catId,
         createdAt: new Date(),
         updatedAt: new Date(),
         admin: {
