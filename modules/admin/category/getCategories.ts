@@ -11,6 +11,7 @@ export const getCategories = async (req: Request, res: Response) => {
         image: true,
         createdAt: true,
         updatedAt: true,
+        posts: true,
       },
     });
 
