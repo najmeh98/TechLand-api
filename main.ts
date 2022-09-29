@@ -1,24 +1,17 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { Authentication, Login } from "./modules/user/auth";
 import { auth } from "./utilis/authenticate";
 import { GetAllPost } from "./modules/admin/posts/getAllPost";
 import fileUpload from "express-fileupload";
 import { DeletePost } from "./modules/admin/posts/deletePost";
 import { EditPost } from "./modules/admin/posts/editPost";
-import { userProfile } from "./modules/user/users/userprofile";
-import { userValid } from "./modules/user/users/userValid";
 import { adminLogin, register } from "./modules/admin/adminauth";
-import { GetAllusers } from "./modules/admin/users/getAllusers";
-import { DeleteUser } from "./modules/admin/users/deleteUser";
-import { EditUserInfo } from "./modules/admin/users/editUserInfo";
 import { adminprofile } from "./modules/admin/admins/adminprofile";
 import { GetallInfo } from "./modules/admin/admins/getAllInfo";
 import { adminCreate } from "./modules/admin/admins/adminCreate";
 import { postsCount } from "./modules/admin/count/postsCount";
 import { changePassword } from "./modules/admin/admins/changePassword";
-import { userPassword } from "./modules/user/users/userPassword";
 import { postCreate } from "./modules/admin/posts/postCreate";
 import { createCategory } from "./modules/admin/category/createCategory";
 import { getCategories } from "./modules/admin/category/getCategories";
@@ -26,6 +19,10 @@ import { categoryInfo } from "./modules/admin/category/categoryInfo";
 import { deleteCategory } from "./modules/admin/category/deleteCategory";
 import { editCategory } from "./modules/admin/category/editCategory";
 import { singlePost } from "./modules/admin/posts/singlePost";
+import { getPosts } from "./modules/user/getPosts";
+import { getAllCategories } from "./modules/getAllCategories";
+import { getPostInfo } from "./modules/user/getPostInfo";
+import { getAdminInfo } from "./modules/user/getAdminInfo";
 
 dotenv.config();
 const app = express();
@@ -54,29 +51,39 @@ app.get("/", (req, res) => {
 // user
 
 // Login
-app.post("/api/user/login", Login);
+// app.post("/api/user/login", Login);
 // Authorization
-app.post("/api/user/auth", Authentication);
+// app.post("/api/user/auth", Authentication);
 //get user
-app.post("/api/data/getUser/:id/:slug", auth, userProfile);
+// app.post("/api/data/getUser/:id/:slug", auth, userProfile);
 // user valid
-app.post("/api/data/userValid", auth, userValid);
+// app.post("/api/data/userValid", auth, userValid);
 // change password
-app.post("/api/data/user/cahngePassword", auth, userPassword);
+// app.post("/api/data/user/cahngePassword", auth, userPassword);
+
+// get posts
+app.post("/api/data/getposts", getPosts);
+//get Category
+app.get("/api/data/getAllCategories", getAllCategories);
+//get post Info
+app.get("/api/data/post", getPostInfo);
+// writer info
+
+app.get("/api/data/Info", getAdminInfo);
 
 //admin
+// count of users
+// app.post("/api/data/admin/getAllusers", auth, GetAllusers); // ?
+//delete user
+// app.delete("/api/data/admin/deleteUser/:id", auth, DeleteUser); // ?
+// edit user info
+// app.post("/api/data/admin/editUserInfo/:id", auth, EditUserInfo); //?
+
 app.post("/api/admin/auth", register);
 //Login
 app.post("/api/admin/login", adminLogin);
 //post create
 app.post("/api/data/admin/postCreate", auth, postCreate);
-
-// count of users
-app.post("/api/data/admin/getAllusers", auth, GetAllusers); // ?
-//delete user
-app.delete("/api/data/admin/deleteUser/:id", auth, DeleteUser); // ?
-// edit user info
-app.post("/api/data/admin/editUserInfo/:id", auth, EditUserInfo); //?
 //profile of admin
 app.post("/api/admin/profile/:id", auth, adminprofile);
 //get all info
