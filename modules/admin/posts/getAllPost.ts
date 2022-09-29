@@ -20,6 +20,11 @@ export const GetAllPost = async (req: Request, res: Response) => {
             updatedAt: true,
             id: true,
             categoryId: true,
+            category: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },
