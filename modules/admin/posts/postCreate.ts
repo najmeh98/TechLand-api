@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-// import fileUpload from "express-fileupload";
 import express from "express";
 import { prisma } from "../../../utilis/prisma";
 import multer from "multer";
