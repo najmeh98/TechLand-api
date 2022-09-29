@@ -9,7 +9,9 @@ export const adminprofile = async (
 ): Promise<void> => {
   try {
     const id: any = req.params.id;
-    const dt: any = req.body.admin;
+    const dt: any = JSON.parse(req.body.admin);
+
+    console.log("dt", dt);
 
     if (!id) return;
     // check data
@@ -43,9 +45,6 @@ export const adminprofile = async (
         job: dt.job,
         updatedAt: new Date().toISOString(),
       },
-      // select: {
-      //   name: true
-      // }
     });
     if (updateInfo) {
       console.log(updateInfo);
