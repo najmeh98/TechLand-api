@@ -10,7 +10,7 @@ import { adminLogin, register } from "./modules/admin/adminauth";
 import { adminprofile } from "./modules/admin/admins/adminprofile";
 import { GetallInfo } from "./modules/admin/admins/getAllInfo";
 import { adminCreate } from "./modules/admin/admins/adminCreate";
-import { postsCount } from "./modules/admin/count/postsCount";
+import { count } from "./modules/admin/count/count";
 import { changePassword } from "./modules/admin/admins/changePassword";
 import { postCreate } from "./modules/admin/posts/postCreate";
 import { createCategory } from "./modules/admin/category/createCategory";
@@ -91,7 +91,7 @@ app.post("/api/data/allInfo", auth, GetallInfo);
 //create admin
 app.post("/api/data/admin/adminCreate", auth, adminCreate);
 //count of posts & users
-app.post("/api/data/count", auth, postsCount);
+app.post("/api/data/count", auth, count);
 //change password
 app.post("/api/admin/changePassword", auth, changePassword);
 // create category
