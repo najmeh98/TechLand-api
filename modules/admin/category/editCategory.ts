@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { dataValidation } from "../../../utilis/checkdata";
 import { uploaderConfig, uploadService } from "../../../utilis/main-services";
 import { prisma } from "../../../utilis/prisma";
-import { imageServices } from "./utils";
 
 export const editCategory = async (req: Request, res: Response) => {
   console.log("req", req);

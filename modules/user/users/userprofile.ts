@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { dataValidation } from "../../../utilis/checkdata";
+
 export const userProfile = async (req: Request, res: Response) => {
   try {
     const { id, slug }: any = req.params;

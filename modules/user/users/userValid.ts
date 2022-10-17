@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
-import jwt from "jsonwebtoken";
 import { generateAcessToken } from "../../../utilis/authenticate";
 
 export const userValid = async (req: Request, res: Response): Promise<void> => {

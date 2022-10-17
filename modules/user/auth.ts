@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../utilis/prisma";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { dataValidation } from "../../utilis/checkdata";
 import { generateAcessToken } from "../../utilis/authenticate";
 

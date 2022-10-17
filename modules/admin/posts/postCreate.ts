@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import express from "express";
 import { prisma } from "../../../utilis/prisma";
 import multer from "multer";
 import fs, { mkdir } from "fs";
@@ -91,7 +90,7 @@ export const postCreate = async (
     if (newPost) {
       res.status(200).json(newPost);
     } else {
-      res.status(400).json("error");
+      res.status(400).json(Error);
     }
   } catch (error) {
     console.log(error);
