@@ -5,7 +5,10 @@ import { dataValidation } from "../../utilis/checkdata";
 import { generateAcessToken } from "../../utilis/authenticate";
 
 //user login
-export const Login = async (req: Request, res: Response) => {
+export const Login = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>> | undefined> => {
   try {
     const email: string = req.body.email;
     const password: any = req.body.password;

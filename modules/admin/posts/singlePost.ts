@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
 
-export const singlePost = async (req: Request, res: Response) => {
+export const singlePost = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const psId: any = req.query?.postId;
 
   try {

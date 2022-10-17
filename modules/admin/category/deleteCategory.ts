@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
 
-export const deleteCategory = async (req: Request, res: Response) => {
+export const deleteCategory = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   console.log("req", req);
   console.log("body", req.body);
   console.log("catId", req.query);

@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
 
-export const DeletePost = async (req: Request, res: Response) => {
+export const DeletePost = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const postid: any = req.query.postId;
   console.log("deleteid", req.query);
 

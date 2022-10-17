@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(fileUpload()); // Don't forget this line!
 
-export const EditPost = async (req: Request, res: Response) => {
+export const EditPost = async (req: Request, res: Response): Promise<void> => {
   console.log("r", req);
   console.log("rbody", req.body);
   console.log("rquery", req.query);

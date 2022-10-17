@@ -3,7 +3,10 @@ import { dataValidation } from "../../../utilis/checkdata";
 import { uploaderConfig, uploadService } from "../../../utilis/main-services";
 import { prisma } from "../../../utilis/prisma";
 
-export const editCategory = async (req: Request, res: Response) => {
+export const editCategory = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   console.log("req", req);
   console.log("body", req.body);
   console.log("req.query", req.query);

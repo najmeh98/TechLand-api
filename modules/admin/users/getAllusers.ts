@@ -5,8 +5,6 @@ export const GetAllusers = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  // const id: any = req.body.id;
-
   try {
     const result = await prisma.user.findMany({
       select: {

@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
 
-export const getCategories = async (req: Request, res: Response) => {
+export const getCategories = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const getCategory = await prisma.category.findMany({
       select: {
