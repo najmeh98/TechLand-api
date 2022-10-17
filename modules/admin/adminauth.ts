@@ -1,8 +1,5 @@
 import { Request, Response } from "express";
 import { prisma } from "../../utilis/prisma";
-import { createHmac } from "crypto";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import { generateAcessToken, hashpassmethod } from "../../utilis/authenticate";
 
 // check data is not empty
@@ -58,17 +55,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-
-      // select: {
-      //   id: true,
-      //   name: true,
-      //   family: true,
-      //   username: true,
-      //   email: true,
-      //   address: true,
-      //   phoneNumber: true,
-      //   createdAt: true,
-      // },
     });
 
     console.log(result);
@@ -94,7 +80,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     if (result) {
       res.status(200).json(admin);
     } else {
-      res.status(401).json("error creating admin");
+      res.status(400).json("error creating admin");
     }
   } catch (error) {
     console.log(error);
@@ -111,7 +97,7 @@ export const adminLogin = async (
     const password: string = req.body.password;
 
     if (!email || !password) {
-      res.status(400).json("data problem");
+      res.status(404).json("data problem");
     }
 
     const user = await prisma.admin.findFirst({
@@ -156,11 +142,12 @@ export const adminLogin = async (
         if (update) {
           res.status(200).json(update);
         } else {
-          res.status(404).json("error");
+          res.status(400).json("bad request");
         }
       }
     } else {
-      res.status(401).json("Unauthorized");
+      console.log(Error);
+      res.status(401).json({ error: "Unauthorized" });
     }
   } catch (error) {
     res.status(500).json(error);
