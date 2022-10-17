@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { createHmac } from "crypto";
 
-export const auth = (req: Request, res: Response, next: NextFunction) => {
+export const auth = (req: Request, res: Response, next: NextFunction): void => {
   const token: any = req.header("authorization");
   const jwttoken: any = process.env.JWT_TOKEN;
 
