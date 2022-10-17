@@ -16,9 +16,21 @@ export const adminCreate = async (
       res.status(401).json("data problem");
     }
 
+    const phoneNumber: string = dt?.phoneNumber;
+
+    const findAdmin = await prisma.admin.findFirst({
+      where: {
+        phoneNumber: phoneNumber,
+      },
+    });
+
+    if (findAdmin) {
+      res.status(400).json({ error: "admin already exists." });
+    }
+
     // password hash
     const pass: string = passwordHash(dt.password);
-
+    // create new admin
     const admin = await prisma.admin.create({
       data: {
         id: undefined,
