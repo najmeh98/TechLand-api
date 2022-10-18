@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { prisma } from "../../utilis/prisma";
 import { generateAcessToken, hashpassmethod } from "../../utilis/authenticate";
+import { Admin } from "@prisma/client";
+import { update } from "./auth.interface";
 
 // check data is not empty
 const dataValidation = (adInfo: any): boolean | undefined => {
@@ -26,7 +28,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
   console.log(adInfo);
 
-  const admin = await prisma.admin.findFirst({
+  const admin: Admin | null = await prisma.admin.findFirst({
     where: { email: email },
   });
 
@@ -38,7 +40,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     //hash password
     const pass: string = hashpassmethod(adInfo.password);
 
-    const result = await prisma.admin.create({
+    const result: Admin = await prisma.admin.create({
       data: {
         id: undefined,
         name: adInfo.name,
@@ -62,7 +64,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const adminId: any = result.id;
 
     //token
-    const token = generateAcessToken(adminId);
+    const token: string = generateAcessToken(adminId);
 
     const admin = {
       id: result.id,
@@ -100,7 +102,7 @@ export const adminLogin = async (
       res.status(404).json("data problem");
     }
 
-    const user = await prisma.admin.findFirst({
+    const user: Admin | null = await prisma.admin.findFirst({
       where: {
         email: email,
         // password: password,
@@ -118,7 +120,7 @@ export const adminLogin = async (
       const token: string = generateAcessToken(userId);
 
       if (pass === hashpassword) {
-        const update = await prisma.admin.update({
+        const update: update = await prisma.admin.update({
           where: { id: userId },
           data: {
             updatedAt: new Date(),
