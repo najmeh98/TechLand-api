@@ -4,10 +4,10 @@ import { prisma } from "../../../utilis/prisma";
 export const count = async (req: Request, res: Response): Promise<void> => {
   try {
     //count of posts
-    const postCount = await prisma.post.count();
+    const postCount: number = await prisma.post.count();
 
     // count of users
-    const adminCount = await prisma.admin.count();
+    const adminCount: number = await prisma.admin.count();
 
     if (postCount || adminCount) {
       res.status(200).json({ postCount, adminCount });
