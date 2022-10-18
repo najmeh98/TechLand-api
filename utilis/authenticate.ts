@@ -8,7 +8,7 @@ export const auth = (req: Request, res: Response, next: NextFunction): void => {
 
   try {
     if (token) {
-      const tokenUserId = jwt.verify(token, jwttoken, {
+      const tokenUserId: string | jwt.JwtPayload = jwt.verify(token, jwttoken, {
         algorithms: ["HS256"],
       });
       //@ts-ignore
