@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
+import { IAdInfo } from "./admin.interface";
 
 export const GetallInfo = async (
   req: Request,
@@ -9,7 +10,7 @@ export const GetallInfo = async (
   const adId: string = req.userId;
   try {
     //get all admin info
-    const adInfo = await prisma.admin.findFirst({
+    const adInfo: IAdInfo | null = await prisma.admin.findFirst({
       where: {
         id: adId,
       },
@@ -38,29 +39,11 @@ export const GetallInfo = async (
         },
       },
     });
-    console.log("info", adInfo);
 
-    // get all user info
-    const alluser = await prisma.user.findMany({
-      select: {
-        name: true,
-        family: true,
-        username: true,
-        email: true,
-        address: true,
-        phoneNumber: true,
-        bio: true,
-        skill: true,
-        createdAt: true,
-      },
-    });
-
-    const lengthofUsers: number = alluser.length;
-
-    if (adInfo && alluser) {
-      res.status(200).json({ adInfo, alluser, lengthofUsers });
+    if (adInfo) {
+      res.status(200).json({ adInfo });
     } else {
-      res.status(400).json("error");
+      res.status(400).json(Error);
     }
   } catch (error) {
     console.log(error);

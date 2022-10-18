@@ -1,3 +1,4 @@
+import { Admin } from "@prisma/client";
 import { Request, Response } from "express";
 import { dataValidation } from "../../../utilis/checkdata";
 import { uploaderConfig, uploadService } from "../../../utilis/main-services";
@@ -28,7 +29,7 @@ export const adminprofile = async (
 
     const imgUrl: string = await uploadService(req, bucket, format);
 
-    const updateInfo = await prisma.admin.update({
+    const updateInfo: Admin = await prisma.admin.update({
       where: {
         id: id,
       },

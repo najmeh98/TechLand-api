@@ -1,3 +1,4 @@
+import { Admin } from "@prisma/client";
 import { Request, Response } from "express";
 import { hashpassmethod } from "../../../utilis/authenticate";
 import { prisma } from "../../../utilis/prisma";
@@ -35,7 +36,7 @@ export const changePassword = async (
       const id: any = findUser?.id;
 
       if (pass === hashCurrentPass) {
-        const updatepass = await prisma.admin.update({
+        const updatepass: Admin = await prisma.admin.update({
           where: {
             id: id,
           },

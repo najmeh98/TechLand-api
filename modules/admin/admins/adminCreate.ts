@@ -1,7 +1,9 @@
+import { Admin } from "@prisma/client";
 import { Request, Response } from "express";
 import { dataValidation } from "../../../utilis/checkdata";
 import { passwordHash } from "../../../utilis/hashpass";
 import { prisma } from "../../../utilis/prisma";
+import { admin } from "./admin.interface";
 
 export const adminCreate = async (
   req: Request,
@@ -10,7 +12,7 @@ export const adminCreate = async (
   const dt: any = req.body?.adminInfo;
 
   try {
-    const value = dataValidation(dt);
+    const value: boolean | undefined = dataValidation(dt);
 
     if (value == false) {
       res.status(401).json("data problem");
@@ -18,7 +20,7 @@ export const adminCreate = async (
 
     const phoneNumber: string = dt?.phoneNumber;
 
-    const findAdmin = await prisma.admin.findFirst({
+    const findAdmin: Admin | null = await prisma.admin.findFirst({
       where: {
         phoneNumber: phoneNumber,
       },
@@ -31,7 +33,7 @@ export const adminCreate = async (
     // password hash
     const pass: string = passwordHash(dt.password);
     // create new admin
-    const admin = await prisma.admin.create({
+    const admin: admin = await prisma.admin.create({
       data: {
         id: undefined,
         name: dt.name,
