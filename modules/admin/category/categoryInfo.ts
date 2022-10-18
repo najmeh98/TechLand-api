@@ -28,7 +28,6 @@ export const categoryInfo = async (
       },
     });
     if (category) {
-      console.log("cat", category);
       res.status(200).json(category);
     } else {
       res.status(400).json(Error);

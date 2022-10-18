@@ -1,3 +1,4 @@
+import { Category } from "@prisma/client";
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
 
@@ -11,7 +12,8 @@ export const deleteCategory = async (
 
   try {
     const catId: any = req.query?.catId;
-    const deleteCate = await prisma.category.delete({
+
+    const deleteCate: Category = await prisma.category.delete({
       where: {
         id: catId,
       },

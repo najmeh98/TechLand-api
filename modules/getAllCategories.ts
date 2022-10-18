@@ -1,12 +1,18 @@
 import { Request, Response } from "express";
 import { prisma } from "../utilis/prisma";
 
+interface getProp {
+  name: string;
+  id: string;
+  image: string;
+}
+
 export const getAllCategories = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const getCate = await prisma.category.findMany({
+    const getCate: getProp[] = await prisma.category.findMany({
       select: {
         name: true,
         id: true,
