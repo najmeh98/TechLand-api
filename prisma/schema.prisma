@@ -33,7 +33,8 @@ model Admin {
  username        String     @db.VarChar(255)
  address         String     @db.VarChar(255)
  phoneNumber     Decimal    @db.Decimal(15,0)
- image           String?    @db.VarChar(255)    
+ image           String?    @db.VarChar(255)
+ banner          String?    @db.VarChar(255)    
  createdAt       DateTime   @default(now())
  updatedAt       DateTime   @default(now())
  token           String     @db.VarChar(255)
@@ -45,7 +46,7 @@ model Admin {
 model Post {
   id             String     @id @default(cuid())
   title          String     @db.VarChar(255)
-  content        String?    @db.VarChar(255)
+  content        String?    @db.LongText
   adminId        String     @default(cuid())
   image          String?    @db.VarChar(255)
   published      Boolean    @default(false)
@@ -57,8 +58,8 @@ model Post {
 }
 
 model Category {
-  id            String      @id @default(cuid())
-  name          String      @db.VarChar(255)
+  id            String       @id @default(cuid())
+  name          String       @db.VarChar(255)
   description   String?      @db.VarChar(255)
   image         String       @db.VarChar(255)
   createdAt     DateTime     @default(now())
@@ -67,3 +68,7 @@ model Category {
   
 }
 
+model View {
+  slug          String      @id @db.VarChar(255)
+  count         BigInt       @default(1)
+}
