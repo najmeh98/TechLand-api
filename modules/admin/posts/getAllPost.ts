@@ -1,5 +1,6 @@
 import { prisma } from "../../../utilis/prisma";
 import { Request, Response } from "express";
+import { adminpost } from "./post.interface";
 
 export const GetAllPost = async (
   req: Request,
@@ -9,7 +10,7 @@ export const GetAllPost = async (
   const adminId = req.adminId;
 
   try {
-    const adminPost = await prisma.admin.findFirst({
+    const adminPost: adminpost | null = await prisma.admin.findFirst({
       where: {
         id: adminId,
       },

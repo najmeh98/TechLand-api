@@ -3,6 +3,8 @@ import fileUpload from "express-fileupload";
 import express from "express";
 import { prisma } from "../../../utilis/prisma";
 import { uploaderConfig, uploadService } from "../../../utilis/main-services";
+import { Post } from "@prisma/client";
+import { post } from "./post.interface";
 const app = express();
 app.use(express.json());
 app.use(fileUpload()); // Don't forget this line!
@@ -27,10 +29,12 @@ export const EditPost = async (req: Request, res: Response): Promise<void> => {
 
     const imgUrl: string = await uploadService(req, bucket, format);
 
-    const findpost = await prisma.post.findFirst({ where: { id: psId } });
+    const findpost: Post | null = await prisma.post.findFirst({
+      where: { id: psId },
+    });
 
     if (findpost) {
-      const editpost = await prisma.post.update({
+      const editpost: post = await prisma.post.update({
         where: { id: psId },
         data: {
           id: undefined,

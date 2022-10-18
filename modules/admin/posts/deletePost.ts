@@ -1,3 +1,4 @@
+import { Post } from "@prisma/client";
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
 
@@ -9,7 +10,7 @@ export const DeletePost = async (
   console.log("deleteid", req.query);
 
   try {
-    const deletepost = await prisma.post.delete({
+    const deletepost: Post = await prisma.post.delete({
       where: { id: postid },
     });
 

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../../utilis/prisma";
+import { findpost } from "./post.interface";
 
 export const singlePost = async (
   req: Request,
@@ -8,7 +9,7 @@ export const singlePost = async (
   const psId: any = req.query?.postId;
 
   try {
-    const post = await prisma.post.findFirst({
+    const post: findpost | null = await prisma.post.findFirst({
       where: {
         id: psId,
       },
