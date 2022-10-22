@@ -21,12 +21,12 @@ const dataValidation = (adInfo: any): boolean | undefined => {
 export const register = async (req: Request, res: Response): Promise<void> => {
   const adInfo: any = req.body.admin;
   const email: any = adInfo.email;
+
   const value = dataValidation(adInfo);
+
   if (value == false) {
     res.status(401).json("data is empty");
   }
-
-  console.log(adInfo);
 
   const admin: Admin | null = await prisma.admin.findFirst({
     where: { email: email },
@@ -51,6 +51,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         phoneNumber: adInfo.phoneNumber,
         address: adInfo.address,
         image: "",
+        banner: "",
         token: "0",
         bio: "",
         job: "",
@@ -75,6 +76,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       address: result.address,
       phoneNumber: result.phoneNumber,
       image: result?.image,
+      banner: result?.banner,
       createdAt: result?.createdAt,
       token: token,
     };
@@ -135,6 +137,7 @@ export const adminLogin = async (
             address: true,
             phoneNumber: true,
             image: true,
+            banner: true,
             token: true,
             createdAt: true,
             updatedAt: true,
