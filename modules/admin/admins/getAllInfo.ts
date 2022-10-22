@@ -27,6 +27,7 @@ export const GetallInfo = async (
         job: true,
         token: true,
         image: true,
+        banner: true,
         createdAt: true,
         post: {
           select: {
