@@ -6,20 +6,25 @@ export const getCategories = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const adminId: any = req?.query?.adminId;
+
   try {
-    const getCategory: category[] = await prisma.category.findMany({
+    const getCategory = await prisma.post.findMany({
+      where: {
+        adminId: adminId,
+      },
+
       select: {
-        name: true,
-        description: true,
-        id: true,
-        image: true,
-        createdAt: true,
-        updatedAt: true,
-        posts: true,
+        category: {
+          include: {
+            posts: true,
+          },
+        },
       },
     });
 
     if (getCategory) {
+      console.log("cat", getCategory);
       res.status(200).json(getCategory);
     } else {
       res.status(400).json(Error);
