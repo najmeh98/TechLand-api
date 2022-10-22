@@ -16,6 +16,7 @@ export const getAdminInfo = async (
       },
       select: {
         image: true,
+        banner: true,
         name: true,
         family: true,
         bio: true,
