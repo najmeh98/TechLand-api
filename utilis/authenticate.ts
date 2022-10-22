@@ -12,7 +12,7 @@ export const auth = (req: Request, res: Response, next: NextFunction): void => {
         algorithms: ["HS256"],
       });
       //@ts-ignore
-      req.userId = tokenUserId; //type : string
+      req.adminId = tokenUserId; //type : string
       return next();
     } else {
       res.status(401).json("invalid token ");
