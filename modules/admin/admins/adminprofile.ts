@@ -29,6 +29,17 @@ export const adminprofile = async (
 
     const imgUrl: string = await uploadService(req, bucket, format);
 
+    const bucketbanner: string = uploaderConfig.createBanner.bucket;
+    const formatbanner: string = uploaderConfig.createBanner.format;
+
+    const bannerUrl: string = await uploadService(
+      req,
+      bucketbanner,
+      formatbanner
+    );
+    console.log("banner", bannerUrl);
+    console.log("img", imgUrl);
+
     const updateInfo: Admin = await prisma.admin.update({
       where: {
         id: id,
@@ -41,7 +52,8 @@ export const adminprofile = async (
         username: dt.username,
         address: dt.address,
         phoneNumber: dt.phoneNumber,
-        image: `${imgUrl}`,
+        image: req?.files?.image && `${imgUrl}`,
+        banner: req?.files?.banner && `${bannerUrl}`,
         bio: dt.bio,
         job: dt.job,
         updatedAt: new Date().toISOString(),
@@ -51,9 +63,10 @@ export const adminprofile = async (
       console.log(updateInfo);
       res.status(200).json(updateInfo);
     } else {
-      res.status(400).json("error");
+      res.status(400).json(Error);
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   }
 };
