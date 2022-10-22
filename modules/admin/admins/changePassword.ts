@@ -48,7 +48,7 @@ export const changePassword = async (
         if (updatepass) {
           res.status(200).json("update password");
         } else {
-          res.status(400).json("error");
+          res.status(400).json(Error);
         }
       } else {
         console.log(Error);
