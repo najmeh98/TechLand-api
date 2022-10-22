@@ -19,6 +19,7 @@ export const uploaderConfig: any = {
   createImage: { bucket: "postimage", format: "jpg" },
   createCategory: { bucket: "categoriesimage", format: ".jpg" },
   createProfile: { bucket: "profileimage", format: ".jpg" },
+  createBanner: { bucket: "bannerimage", format: ".jpg" },
 };
 
 export const uploadService = async (
