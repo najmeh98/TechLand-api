@@ -7,7 +7,8 @@ export const GetAllPost = async (
   res: Response
 ): Promise<void> => {
   //@ts-ignore
-  const adminId = req.adminId;
+  // const adminId = req.adminId;
+  const adminId: any = req?.query?.adminId;
 
   try {
     const adminPost: adminpost | null = await prisma.admin.findFirst({
