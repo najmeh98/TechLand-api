@@ -10,10 +10,6 @@ app.use(express.json());
 app.use(fileUpload()); // Don't forget this line!
 
 export const EditPost = async (req: Request, res: Response): Promise<void> => {
-  console.log("r", req);
-  console.log("rbody", req.body);
-  console.log("rquery", req.query);
-
   try {
     const psId: any = req.query.postId;
 
@@ -21,8 +17,6 @@ export const EditPost = async (req: Request, res: Response): Promise<void> => {
     const content: string = req.body.content;
 
     const files: any = req.files;
-
-    console.log("files", files);
 
     const bucket: string = uploaderConfig.createImage.bucket;
     const format: string = uploaderConfig.createImage.format;
