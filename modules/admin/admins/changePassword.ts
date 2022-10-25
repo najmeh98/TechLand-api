@@ -16,7 +16,7 @@ export const changePassword = async (
   const usreId: string = req.userId;
 
   if (!passsword || !newpass || passsword.length == null) {
-    res.status(401).json("data problem");
+    res.status(404).json("data problem");
   }
   try {
     const findUser = await prisma.admin.findFirst({

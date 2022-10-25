@@ -15,7 +15,7 @@ export const adminCreate = async (
     const value: boolean | undefined = dataValidation(dt);
 
     if (value == false) {
-      res.status(401).json("data problem");
+      res.status(404).json("data problem");
     }
 
     const phoneNumber: string = dt?.phoneNumber;
@@ -27,7 +27,7 @@ export const adminCreate = async (
     });
 
     if (findAdmin) {
-      res.status(400).json({ error: "admin already exists." });
+      res.status(403).json({ error: "admin already exists." });
     }
 
     // password hash

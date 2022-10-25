@@ -25,7 +25,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   const value = dataValidation(adInfo);
 
   if (value == false) {
-    res.status(401).json("data is empty");
+    res.status(404).json("data is empty");
   }
 
   const admin: Admin | null = await prisma.admin.findFirst({
@@ -33,7 +33,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   });
 
   if (admin) {
-    res.status(400).json({ error: "admin already exists." });
+    res.status(403).json({ error: "admin already exists." });
   }
 
   try {

@@ -19,7 +19,7 @@ export const adminprofile = async (
     const value: boolean | undefined = dataValidation(dt);
 
     if (value == false) {
-      res.status(401).json("data is empty!");
+      res.status(404).json("data is empty!");
     }
     // check token
     // ...
