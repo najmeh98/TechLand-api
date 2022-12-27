@@ -1,3 +1,3 @@
 "use strict";
 require = require("esm")(module /*, options*/);
-module.exports = require("./main.ts");
+module.exports = require("./main.js");
