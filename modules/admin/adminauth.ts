@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../../utilis/prisma";
 import { generateAcessToken, hashpassmethod } from "../../utilis/authenticate";
-import { Admin } from "@prisma/client";
+// import { Admin } from "@prisma/client";
 import { update } from "./auth.interface";
 
 // check data is not empty
@@ -28,7 +28,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.status(404).json("data is empty");
   }
 
-  const admin: Admin | null = await prisma.admin.findFirst({
+  const admin = await prisma.admin.findFirst({
     where: { email: email },
   });
 
@@ -40,7 +40,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     //hash password
     const pass: string = hashpassmethod(adInfo.password);
 
-    const result: Admin = await prisma.admin.create({
+    const result = await prisma.admin.create({
       data: {
         id: undefined,
         name: adInfo.name,
@@ -104,7 +104,7 @@ export const adminLogin = async (
       res.status(404).json("data problem");
     }
 
-    const user: Admin | null = await prisma.admin.findFirst({
+    const user = await prisma.admin.findFirst({
       where: {
         email: email,
         // password: password,

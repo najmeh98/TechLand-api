@@ -1,4 +1,4 @@
-import { Category } from "@prisma/client";
+// import { Category } from "@prisma/client";
 import { Request, Response } from "express";
 import { dataValidation } from "../../../utilis/checkdata";
 import { uploaderConfig, uploadService } from "../../../utilis/main-services";
@@ -31,13 +31,13 @@ export const editCategory = async (
   const imgUrl: string = await uploadService(req, bucket, format);
 
   try {
-    const findCategory: Category | null = await prisma.category.findFirst({
+    const findCategory = await prisma.category.findFirst({
       where: { id: catId },
     });
     console.log(findCategory);
 
     if (findCategory) {
-      const editCat: Category = await prisma.category.update({
+      const editCat = await prisma.category.update({
         where: {
           id: catId,
         },

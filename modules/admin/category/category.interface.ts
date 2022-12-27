@@ -1,4 +1,4 @@
-import { Post } from "@prisma/client";
+// import { Post } from "@prisma/client";
 
 export type category = {
   name: string;
@@ -7,5 +7,5 @@ export type category = {
   image: string;
   createdAt: Date;
   updatedAt: Date;
-  posts: Post[];
+  posts: [];
 };

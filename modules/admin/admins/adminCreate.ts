@@ -1,4 +1,4 @@
-import { Admin } from "@prisma/client";
+// import { Admin } from "@prisma/client";
 import { Request, Response } from "express";
 import { dataValidation } from "../../../utilis/checkdata";
 import { passwordHash } from "../../../utilis/hashpass";
@@ -20,7 +20,7 @@ export const adminCreate = async (
 
     const phoneNumber: string = dt?.phoneNumber;
 
-    const findAdmin: Admin | null = await prisma.admin.findFirst({
+    const findAdmin = await prisma.admin.findFirst({
       where: {
         phoneNumber: phoneNumber,
       },
