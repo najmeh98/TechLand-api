@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import { hashpassmethod } from "../../../utilis/authenticate";
 import { prisma } from "../../../utilis/prisma";
 
-export const userPassword = async (req: Request, res: Response) => {
+export const userPassword = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const currentpass: string = req.body?.passwordInfo?.currentPassword;
 
   const newpass: string = req.body?.passwordInfo?.newPassword;
